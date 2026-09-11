@@ -1,0 +1,100 @@
+services:
+  ignition-prod:
+    image: inductiveautomation/ignition:8.3.6
+    ports:
+      - "8088:8088"   # HTTP
+      - "8043:8043"   # HTTPS
+      - "8050:8050" # MQTT
+      # - "8060:8060"   # GAN
+      # - "62541:62541" # OPC
+    environment:
+      ACCEPT_IGNITION_EULA: "Y"
+      IGNITION_EDITION: "standard"
+      DISABLE_QUICKSTART: true
+      GATEWAY_ADMIN_USERNAME: "admin"
+      GATEWAY_ADMIN_PASSWORD: "password"
+
+      # GATEWAY_DEFAULT_PORTS: "true"
+      # GATEWAY_HTTP_PORT: "8088"
+      # GATEWAY_HTTPS_PORT: "8043"
+      # GATEWAY_GAN_PORT: "8060"
+
+      # TZ: "America/Detroit"
+
+      MQTT_CONFIG_DIR: "/usr/local/bin/ignition/data/mqtt-bridge/"
+    command: >
+      -n ignition-prod
+      -a 10.21.2.156
+      -h 8088
+      -s 8043
+      -- 
+      -Dignition.allowunsignedmodules=true
+    volumes:
+      - /home/ladmin/ignition/prod/data:/usr/local/bin/ignition/data
+      - ./my-mqtt-config:/usr/local/bin/ignition/data/mqtt-bridge:ro
+      - ./ignition.conf:/usr/local/bin/ignition/data/ignition.conf
+    networks:
+      - ignition-net
+
+  # ignition-qaqc:
+  #   image: inductiveautomation/ignition:8.3.1
+  #   ports:
+  #     - "8089:8088"   # HTTP
+  #     - "8044:8043"   # HTTPS
+  #     # - "8061:8060"   # GAN
+  #     # - "62542:62541" # OPC
+  #   environment:
+  #     ACCEPT_IGNITION_EULA: "Y"
+  #     IGNITION_EDITION: "standard"
+  #     DISABLE_QUICKSTART: true
+  #     GATEWAY_ADMIN_USERNAME: "admin"
+  #     GATEWAY_ADMIN_PASSWORD: "password"
+
+  #     # GATEWAY_DEFAULT_PORTS: "true"
+  #     # GATEWAY_HTTP_PORT: "8089"
+  #     # GATEWAY_HTTPS_PORT: "8044"
+  #     # GATEWAY_GAN_PORT: "8061"
+
+  #     # TZ: "America/Detroit"
+  #   command: >
+  #     -n ignition-qaqc
+  #     -a 10.21.2.2
+  #     -h 8089
+  #     -s 8044
+  #   volumes:
+  #     - /home/ladmin/ignition/qaqc/data:/usr/local/bin/ignition/data
+  #   networks:
+  #     - ignition-net
+
+  # ignition-dev:
+  #   image: inductiveautomation/ignition:8.3.1
+  #   ports:
+  #     - "8188:8088"   # HTTP
+  #     - "8143:8043"   # HTTPS
+  #     # - "8160:8060"   # GAN
+  #     # - "62542:62541" # OPC
+  #   environment:
+  #     ACCEPT_IGNITION_EULA: "Y"
+  #     IGNITION_EDITION: "standard"
+  #     DISABLE_QUICKSTART: true
+  #     GATEWAY_ADMIN_USERNAME: "admin"
+  #     GATEWAY_ADMIN_PASSWORD: "password"
+
+  #     # GATEWAY_DEFAULT_PORTS: "true"
+  #     # GATEWAY_HTTP_PORT: "8188"
+  #     # GATEWAY_HTTPS_PORT: "8143"
+  #     # GATEWAY_GAN_PORT: "8160"
+
+  #     # TZ: "America/Detroit"
+  #   command: >
+  #     -n ignition-dev
+  #     -a 10.21.2.2
+  #     -h 8188
+  #     -s 8143
+  #   volumes:
+  #     - /home/ladmin/ignition/dev/data:/usr/local/bin/ignition/data
+  #   networks:
+  #     - ignition-net
+
+networks:
+  ignition-net:

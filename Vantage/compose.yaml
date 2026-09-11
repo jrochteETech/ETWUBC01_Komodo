@@ -1,0 +1,35 @@
+services:
+  ignition-vdc:
+    image: inductiveautomation/ignition:8.1.42
+    ports:
+      - "8091:8088"   # HTTP
+      - "8045:8043"   # HTTPS
+      # - "8060:8060"   # GAN
+      # - "62541:62541" # OPC
+    environment:
+      ACCEPT_IGNITION_EULA: "Y"
+      IGNITION_EDITION: "standard"
+      DISABLE_QUICKSTART: true
+      GATEWAY_ADMIN_USERNAME: "admin"
+      GATEWAY_ADMIN_PASSWORD: "password"
+      #GATEWAY_INIT_MEMORY: 4096
+      #GATEWAY_MAX_MEMORY: 8192
+      #GATEWAY_JVM_ARGS: "-Xms4g -Xmx8g"
+    command: >
+      -n ignition-vdc
+      -a 10.21.2.156
+      -h 8091
+      -s 8045
+      -m 12000
+    volumes:
+      - ignition-vdc-data:/usr/local/bin/ignition/data
+      #- ./ignition.conf:/usr/local/bin/ignition/data/ignition.conf:rw
+    networks:
+      - ignition-vdc
+
+volumes:
+  ignition-vdc-data:
+    driver: local
+
+networks:
+  ignition-vdc:

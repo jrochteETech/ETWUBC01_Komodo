@@ -1,0 +1,31 @@
+services:
+  emqx:
+    image: emqx/emqx-enterprise:6.2.0
+    container_name: emqx
+    environment:
+      - "EMQX_NODE_NAME=emqx@node.emqx.com"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks:
+      emqx-bridge:
+      ignition_ignition-net:
+    ports:
+      - 8183:1883
+      - 8083:8083
+      - 8084:8084
+      - 8185:8883
+      - 8184:18083
+    volumes:
+      - emqx_data:/opt/emqx/data
+
+volumes:
+  emqx_data:
+
+networks:
+  emqx-bridge:
+  ignition_ignition-net:
+    external: true

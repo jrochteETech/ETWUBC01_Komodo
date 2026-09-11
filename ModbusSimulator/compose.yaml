@@ -1,0 +1,16 @@
+services:
+  modbus-simulator:
+    image: modbussimulator:latest
+    pull_policy: never
+    container_name: modbus-simulator
+    restart: unless-stopped
+    ports:
+      - "8052:502"
+    volumes:
+      - ./:/app
+    networks:
+      - ignition_ignition-net
+
+networks:
+  ignition_ignition-net:
+      external: true

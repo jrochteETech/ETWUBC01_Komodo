@@ -1,0 +1,31 @@
+services:
+  ignition-alarms:
+    image: inductiveautomation/ignition:8.1.42
+    ports:
+      - "8089:8088"   # HTTP
+      - "8044:8043"   # HTTPS
+      # - "8060:8060"   # GAN
+      # - "62541:62541" # OPC
+    environment:
+      ACCEPT_IGNITION_EULA: "Y"
+      IGNITION_EDITION: "standard"
+      DISABLE_QUICKSTART: true
+      GATEWAY_ADMIN_USERNAME: "admin"
+      GATEWAY_ADMIN_PASSWORD: "password"
+    command: >
+      -n ignition-alarms
+      -a 10.21.2.2
+      -h 8089
+      -s 8043
+    volumes:
+      - ignition-alarms-data:/usr/local/bin/ignition/data
+      - ./ignition.conf:/usr/local/bin/ignition/data/ignition.conf
+    networks:
+      - ignition-alarms
+
+volumes:
+  ignition-alarms-data:
+    driver: local
+
+networks:
+  ignition-alarms:

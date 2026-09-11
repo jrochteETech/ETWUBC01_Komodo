@@ -1,0 +1,68 @@
+services:
+  minio:
+    image: quay.io/minio/aistor/minio:latest
+    container_name: aistor-server
+    ports:
+      - ${MINIO_API_PORT}:9000
+      - ${MINIO_CONSOLE_PORT}:9001
+    environment:
+      MINIO_LICENSE_FILE: "/config/minio.license"
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_VOLUMES: "/data"
+      MINIO_CONFIG_ENV_FILE: "/config/config.env"
+      # Uncomment for special character support (MUST be set at first run)
+      # MINIO_OBJECT_NAMING: extended
+    volumes:
+      # Separate data directory - no cross-mounts allowed here
+      - minio-data:/data
+      # Config directory for license and config files
+      - ./config:/config:ro
+    command: server /data --console-address ":9001" --license "/config/minio.license"
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+    #   interval: 30s
+    #   timeout: 20s
+    #   retries: 3
+    #   start_period: 40s
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # n8n service
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    ports:
+      - ${N8N_PORT}:5678
+    environment:
+      # Set required environment variables for n8n
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: ${N8N_USER}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_PASSWORD}
+      GENERIC_TIMEZONE: "UTC"
+      N8N_HOST: "0.0.0.0"
+      N8N_PORT: 5678
+      N8N_PROTOCOL: "http"
+      N8N_SECURE_COOKIE: false
+      
+      NODES_EXCLUDE: "[]"
+      N8N_RESTRICT_FILE_ACCESS_TO: ""
+      # Set webhook settings (if needed later)
+      # WEBHOOK_TUNNEL_URL: "http://localhost:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - /home/ladmin/ignition:/home/node/ignition:ro
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  minio-data:
+    driver: local
+  n8n_data:
+    driver: local

@@ -1,0 +1,3 @@
+TagPath,pointType,objectType,engUnit,stateText
+[default]testMQTT,testPoint,testObject,unit,"{"value":0,"text":"Off"},{"value":1,"text":"On"}"
+[default]timeMQTT,testPoint,testObject,time,

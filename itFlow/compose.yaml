@@ -1,0 +1,49 @@
+services:
+  itflow-db:
+    hostname: itflow-db
+    container_name: itflow-db
+    image: mariadb:10.6.11
+    restart: always
+    networks:
+      - itflow-net
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: "true"
+      MARIADB_DATABASE: itflow
+      MARIADB_USER: itflow
+      MARIADB_PASSWORD: ${ITFLOW_DB_PASS}
+    volumes:
+      - itflow-db:/var/lib/mysql
+
+  itflow:
+    container_name: itflow
+    image: itfloworg/itflow
+    restart: unless-stopped
+    networks:
+      - itflow-net
+    ports:
+      - "8031:8080"
+    environment:
+      - TZ=${TZ}
+      - ITFLOW_NAME=ITFlow
+      - ITFLOW_URL=it.${ROOT_DOMAIN}
+      - ITFLOW_PORT=8080
+      - ITFLOW_REPO=github.com/itflow-org/itflow
+      - ITFLOW_REPO_BRANCH=master
+      - ITFLOW_LOG_LEVEL=info
+
+      - ITFLOW_DB_HOST=itflow-db
+      - ITFLOW_DB_PORT=3306
+      - ITFLOW_DB_NAME=itflow
+      - ITFLOW_DB_USER=itflow
+      - ITFLOW_DB_PASS=${ITFLOW_DB_PASS}
+
+      - APACHE_SERVER_NAME=localhost
+    volumes:
+      - ./itflow/:/var/www/localhost/htdocs
+
+
+volumes:
+  itflow-db:
+
+networks:
+  itflow-net:

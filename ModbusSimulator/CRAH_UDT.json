@@ -1,0 +1,351 @@
+{
+  "name": "CRAH",
+  "parameters": {
+    "DeviceName": {
+      "dataType": "String",
+      "value": "CRAH"
+    },
+    "FieldName": {
+      "dataType": "String",
+      "value": "CRAH"
+    },
+    "UnitId": {
+      "dataType": "Integer",
+      "value": 2
+    }
+  },
+  "tagType": "UdtType",
+  "tags": [
+    {
+      "name": "Humidity",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Float4",
+          "engUnit": "%RH",
+          "formatString": "0.0",
+          "name": "Supply Air Humidity",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF6"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "%RH",
+          "formatString": "0.0",
+          "name": "Return Air Humidity",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF4"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Power",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Float4",
+          "engUnit": "kW",
+          "formatString": "0.0",
+          "name": "Electrical Power",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF24"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Cooling",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Float4",
+          "engUnit": "kW",
+          "formatString": "0.0",
+          "name": "Cooling Capacity",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF22"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "%",
+          "formatString": "0.0",
+          "name": "CHW Valve Position",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF14"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "%",
+          "formatString": "0.0",
+          "name": "Cooling Demand",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF12"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Alarms",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Boolean",
+          "name": "Fan Fault",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C8"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "High Return Temperature Alarm",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C6"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "Common Alarm",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C4"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "Low Supply Temperature Alarm",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C7"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "Dirty Filter Alarm",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C5"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Temperature",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Float4",
+          "engUnit": "°F",
+          "formatString": "0.0",
+          "name": "Return Air Temperature",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF0"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "°F",
+          "formatString": "0.0",
+          "name": "Supply Air Setpoint",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.HRF2"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "°F",
+          "formatString": "0.0",
+          "name": "Entering CHW Temperature",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF16"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "°F",
+          "formatString": "0.0",
+          "name": "Leaving CHW Temperature",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF18"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "°F",
+          "formatString": "0.0",
+          "name": "Supply Air Temperature",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF2"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Pressure",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Float4",
+          "engUnit": "inWC",
+          "formatString": "0.00",
+          "name": "Filter Differential Pressure",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF20"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "inWC",
+          "formatString": "0.00",
+          "name": "Static Pressure",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF8"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Boolean",
+          "name": "Fan Running",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C2"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "Unit Enabled",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C1"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "Cooling Active",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C3"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Fan",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Float4",
+          "engUnit": "%",
+          "formatString": "0.0",
+          "name": "Fan Speed Feedback",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF10"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Float4",
+          "engUnit": "%",
+          "formatString": "0.0",
+          "name": "Fan Speed Command",
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.HRF0"
+          },
+          "opcServer": "Ignition OPC UA Server",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    }
+  ]
+}

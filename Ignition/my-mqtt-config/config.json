@@ -1,0 +1,4 @@
+{
+  "brokerUrl": "tcp://emqx:1883",
+  "topicPrefix": "test/v1"
+}

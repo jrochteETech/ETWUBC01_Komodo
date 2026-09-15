@@ -186,81 +186,83 @@ def gettypeid(provider, tagPath, udtInstances, configCache):
 	return None
 
 
-provider = "default"
+def main(provider):
+	startTime = system.date.now().getTime()
+	placeCount = 0
+	instanceAlarmCount = 0
+	missMatchingAlarms = []
+	udtInstances = {}
+	configCache = {}
 
-allUDTAlarms = queryAllUDTAlarms(provider)
-print("UDT alarm Definitions: " + str(len(allUDTAlarms)))
-allOverrides = queryAllOverrides(provider)
-print("Tag Overrides: " + str(len(allOverrides)))
+	allUDTAlarms = queryAllUDTAlarms(provider)
+	print("UDT alarm Definitions: " + str(len(allUDTAlarms)))
+	allOverrides = queryAllOverrides(provider)
+	print("Tag Alarm Overrides: " + str(len(allOverrides)))
 
-startTime = system.date.now().getTime()
-placeCount = 0
-instanceAlarmCount = 0
-missMatchingAlarms = []
-udtInstances = {}
-configCache = {}
-for each in allOverrides:
-	placeCount += 1
-	if placeCount % 100 == 0:
-		print(str(placeCount)+ "/" + str(len(allOverrides)))
-	
-	tagPath = str(each[0]).rsplit("]")[-1]
-	typeInfo = gettypeid(provider, tagPath, udtInstances, configCache)
-	
-	overrideAlarm = each[1]
-	if typeInfo is not None:
-		typeID, relPath = typeInfo
-		udtAlarmPath = typeID+relPath
-		if udtAlarmPath not in allUDTAlarms:
+	for each in allOverrides:
+		placeCount += 1
+		if placeCount % 100 == 0:
+			print(str(placeCount)+ "/" + str(len(allOverrides)))
+		
+		tagPath = str(each[0]).rsplit("]")[-1]
+		typeInfo = gettypeid(provider, tagPath, udtInstances, configCache)
+		
+		overrideAlarm = each[1]
+		if typeInfo is not None:
+			typeID, relPath = typeInfo
+			udtAlarmPath = typeID+relPath
+			if udtAlarmPath not in allUDTAlarms:
+				instanceAlarmCount += 1
+				missMatchingAlarms.append(
+					{
+						"message": "Alarm definition not found: " + udtAlarmPath,
+						"tagPath": tagPath,
+						"typeid": typeID
+					}
+				)
+			elif overrideAlarm != allUDTAlarms[udtAlarmPath]:
+				differenceValues = {}
+				for key, value in compareAlarmConfig(
+					overrideAlarm,
+					allUDTAlarms[udtAlarmPath]
+				):
+					formattedValue = formatAlarmValue(value)
+					values = differenceValues.setdefault(key, [])
+					if formattedValue not in values:
+						values.append(formattedValue)
+				differences = dict([
+					(key, "; ".join(values))
+					for key, values in differenceValues.items()
+				])
+				missMatchingAlarms.append(
+					{
+						"message": "Alarm config differs",
+						"tagPath": tagPath,
+						"typeid": typeID,
+						"differences": differences
+					}
+				)
+		else:
 			instanceAlarmCount += 1
 			missMatchingAlarms.append(
 				{
-					"message": "Alarm definition not found: " + udtAlarmPath,
+					"message": "UDT instance/type not found",
 					"tagPath": tagPath,
-					"typeid": typeID
+					"typeid": ""
 				}
-			)
-		elif overrideAlarm != allUDTAlarms[udtAlarmPath]:
-			differenceValues = {}
-			for key, value in compareAlarmConfig(
-				overrideAlarm,
-				allUDTAlarms[udtAlarmPath]
-			):
-				formattedValue = formatAlarmValue(value)
-				values = differenceValues.setdefault(key, [])
-				if formattedValue not in values:
-					values.append(formattedValue)
-			differences = dict([
-				(key, "; ".join(values))
-				for key, values in differenceValues.items()
-			])
-			missMatchingAlarms.append(
-				{
-					"message": "Alarm config differs",
-					"tagPath": tagPath,
-					"typeid": typeID,
-					"differences": differences
-				}
-			)
-	else:
-		instanceAlarmCount += 1
-		missMatchingAlarms.append(
-			{
-				"message": "UDT instance/type not found",
-				"tagPath": tagPath,
-				"typeid": ""
-			}
-			)
-#	print(each)
-	
-endTime = system.date.now().getTime()
+				)
+	#	print(each)
+		
+	endTime = system.date.now().getTime()
+	outputPath = exportResults(missMatchingAlarms)
 
-outputPath = exportResults(missMatchingAlarms)
+	print("="*50)
 
-print("="*50)
+	print("Miss Matched Alarms: " + str(len(missMatchingAlarms)))
+	print("Alarms not in UDTs: " + str(instanceAlarmCount))
+	print("Total Time:           {} s".format((endTime - startTime)/1000))
+	if outputPath is not None:
+		print("CSV exported to:      " + outputPath)
 
-print("Miss Matched Alarms: " + str(len(missMatchingAlarms)))
-print("Alarms not in UDTs: " + str(instanceAlarmCount))
-print("Total Time:           {} s".format((endTime - startTime)/1000))
-if outputPath is not None:
-	print("CSV exported to:      " + outputPath)
+provider = "default"
+main(provider)

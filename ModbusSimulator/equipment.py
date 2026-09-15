@@ -17,6 +17,10 @@ def linear(duration: float, start: float, end: float, loop: bool = True) -> Auto
     return "linear", {"duration": duration, "start": start, "end": end, "loop": loop}
 
 
+def dew_point_fahrenheit(temperature: Automation, humidity: Automation) -> Automation:
+    return "dew_point_fahrenheit", {"temperature": temperature, "humidity": humidity}
+
+
 def float_to_registers(value: float) -> tuple[int, int]:
     """Pack a float32 into two 16-bit registers [MSW, LSW]."""
     packed = struct.pack(">f", value)
@@ -34,6 +38,15 @@ def automation_value(automation: Automation, elapsed: float) -> float:
         duration = settings["duration"]
         current = elapsed % duration if settings.get("loop", True) else min(elapsed, duration)
         return settings["start"] + (settings["end"] - settings["start"]) * current / duration
+    if kind == "dew_point_fahrenheit":
+        temperature_f = automation_value(settings["temperature"], elapsed)
+        humidity = max(0.1, min(100.0, automation_value(settings["humidity"], elapsed)))
+        temperature_c = (temperature_f - 32.0) * 5.0 / 9.0
+        alpha = math.log(humidity / 100.0) + (17.625 * temperature_c) / (
+            243.04 + temperature_c
+        )
+        dew_point_c = 243.04 * alpha / (17.625 - alpha)
+        return dew_point_c * 9.0 / 5.0 + 32.0
 
     raise ValueError(f"Unsupported automation type: {kind}")
 

@@ -4,8 +4,6 @@ from equipment import Coil, Equipment, Register, sine
 THS = Equipment(
     name="THS Gateway",
     unit_id=3,
-    zero_based=True,
-    reverse_word_order=False,
     datastore_size=256,
     coils=[
         Coil(0, "Sensor enabled", True),

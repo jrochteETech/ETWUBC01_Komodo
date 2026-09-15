@@ -1,0 +1,126 @@
+{
+  "name": "THS",
+  "parameters": {
+    "FieldName": {
+      "dataType": "String",
+      "value": "THS"
+    },
+    "UnitId": {
+      "dataType": "Integer",
+      "value": 3
+    },
+    "DeviceName": {
+      "dataType": "String",
+      "value": "THS_Gateway"
+    },
+    "regOffset": {
+      "dataType": "Integer",
+      "value": 0
+    }
+  },
+  "tagType": "UdtType",
+  "tags": [
+    {
+      "name": "Humidity",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF{regOffset+2}"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "historyProvider": "ETWSQL01_hst",
+          "historyEnabled": true,
+          "name": "Humidity",
+          "formatString": "0.0",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Alarms",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C{regOffset+1}"
+          },
+          "valueSource": "opc",
+          "dataType": "Boolean",
+          "name": "Battery Low",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Temperature",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF{regOffset+0}"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "historyProvider": "ETWSQL01_hst",
+          "historyEnabled": true,
+          "name": "Temperature",
+          "formatString": "0.0",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF{regOffset+4}"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Battery Voltage",
+          "formatString": "0.0",
+          "engUnit": "V",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C{regOffset+0}"
+          },
+          "valueSource": "opc",
+          "dataType": "Boolean",
+          "name": "Sensor Enabled",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF{regOffset+6}"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Signal Strength",
+          "formatString": "0.0",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    }
+  ]
+}

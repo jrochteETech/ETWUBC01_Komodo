@@ -1,10 +1,6 @@
 {
   "name": "PowerMeter",
   "parameters": {
-    "DeviceName": {
-      "dataType": "String",
-      "value": "ModbusPal"
-    },
     "FieldName": {
       "dataType": "String",
       "value": "PowerMeter"
@@ -12,96 +8,183 @@
     "UnitId": {
       "dataType": "Integer",
       "value": 1
+    },
+    "DeviceName": {
+      "dataType": "String",
+      "value": "PowerMeter"
     }
   },
   "tagType": "UdtType",
   "tags": [
     {
-      "name": "Power",
+      "name": "Voltage",
       "tagType": "Folder",
       "tags": [
         {
+          "valueSource": "expr",
+          "expression": "mean({[.]Voltage L1-N}, {[.]Voltage L2-N}, {[.]Voltage L3-N})",
           "dataType": "Float4",
-          "engUnit": "kW",
-          "formatString": "0.00",
-          "name": "Active Power",
-          "opcItemPath": {
-            "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF13"
-          },
-          "opcServer": "Ignition OPC UA Server",
-          "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "name": "Voltage L-N Avg",
+          "formatString": "0.0",
+          "engUnit": "V",
+          "tagType": "AtomicTag"
         },
         {
+          "valueSource": "expr",
+          "expression": "mean({[.]Voltage L1-L2}, {[.]Voltage L2-L3}, {[.]Voltage L3-L1})",
           "dataType": "Float4",
-          "engUnit": "kvar",
-          "formatString": "0.00",
-          "name": "Reactive Power",
-          "opcItemPath": {
-            "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF15"
-          },
-          "opcServer": "Ignition OPC UA Server",
-          "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "name": "Voltage L-L Avg",
+          "formatString": "0.0",
+          "engUnit": "V",
+          "tagType": "AtomicTag"
         },
         {
-          "dataType": "Float4",
-          "engUnit": "Hz",
-          "formatString": "0.00",
-          "name": "Frequency",
           "opcItemPath": {
             "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF21"
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF3"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Voltage L2-N",
+          "formatString": "0.0",
+          "engUnit": "V",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
         },
         {
-          "dataType": "Float4",
-          "engUnit": "kVA",
-          "formatString": "0.00",
-          "name": "Apparent Power",
           "opcItemPath": {
             "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF17"
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF29"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Voltage L3-L1",
+          "formatString": "0.0",
+          "engUnit": "V",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
         },
         {
-          "dataType": "Float4",
-          "formatString": "0.000",
-          "name": "Power Factor",
           "opcItemPath": {
             "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF19"
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF5"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Voltage L3-N",
+          "formatString": "0.0",
+          "engUnit": "V",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF25"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Voltage L1-L2",
+          "formatString": "0.0",
+          "engUnit": "V",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF27"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Voltage L2-L3",
+          "formatString": "0.0",
+          "engUnit": "V",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF1"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Voltage L1-N",
+          "formatString": "0.0",
+          "engUnit": "V",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
         }
       ]
     },
     {
-      "name": "Energy",
+      "name": "Power",
       "tagType": "Folder",
       "tags": [
         {
-          "dataType": "Float4",
-          "engUnit": "kWh",
-          "formatString": "0.0",
-          "name": "Energy Import",
           "opcItemPath": {
             "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF23"
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF17"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Apparent Power",
+          "formatString": "0.00",
+          "engUnit": "kVA",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF15"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Reactive Power",
+          "formatString": "0.00",
+          "engUnit": "kvar",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF19"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Power Factor",
+          "formatString": "0.000",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF21"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Frequency",
+          "formatString": "0.00",
+          "engUnit": "Hz",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF13"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Active Power",
+          "formatString": "0.00",
+          "engUnit": "kW",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
         }
       ]
     },
@@ -110,117 +193,34 @@
       "tagType": "Folder",
       "tags": [
         {
-          "dataType": "Boolean",
-          "name": "Meter Healthy",
           "opcItemPath": {
             "bindType": "parameter",
             "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C1"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Boolean",
+          "name": "Meter Healthy",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
         }
       ]
     },
     {
-      "name": "Voltage",
+      "name": "Energy",
       "tagType": "Folder",
       "tags": [
         {
-          "dataType": "Float4",
-          "engUnit": "V",
-          "expression": "mean({[.]Voltage L1-L2}, {[.]Voltage L2-L3}, {[.]Voltage L3-L1})",
-          "formatString": "0.0",
-          "name": "Voltage L-L Avg",
-          "tagType": "AtomicTag",
-          "valueSource": "expr"
-        },
-        {
-          "dataType": "Float4",
-          "engUnit": "V",
-          "formatString": "0.0",
-          "name": "Voltage L1-L2",
           "opcItemPath": {
             "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF25"
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF23"
           },
-          "opcServer": "Ignition OPC UA Server",
-          "tagType": "AtomicTag",
-          "valueSource": "opc"
-        },
-        {
+          "valueSource": "opc",
           "dataType": "Float4",
-          "engUnit": "V",
+          "name": "Energy Import",
           "formatString": "0.0",
-          "name": "Voltage L2-L3",
-          "opcItemPath": {
-            "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF27"
-          },
-          "opcServer": "Ignition OPC UA Server",
+          "engUnit": "kWh",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
-        },
-        {
-          "dataType": "Float4",
-          "engUnit": "V",
-          "formatString": "0.0",
-          "name": "Voltage L3-L1",
-          "opcItemPath": {
-            "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF29"
-          },
-          "opcServer": "Ignition OPC UA Server",
-          "tagType": "AtomicTag",
-          "valueSource": "opc"
-        },
-        {
-          "dataType": "Float4",
-          "engUnit": "V",
-          "formatString": "0.0",
-          "name": "Voltage L3-N",
-          "opcItemPath": {
-            "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF5"
-          },
-          "opcServer": "Ignition OPC UA Server",
-          "tagType": "AtomicTag",
-          "valueSource": "opc"
-        },
-        {
-          "dataType": "Float4",
-          "engUnit": "V",
-          "formatString": "0.0",
-          "name": "Voltage L1-N",
-          "opcItemPath": {
-            "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF1"
-          },
-          "opcServer": "Ignition OPC UA Server",
-          "tagType": "AtomicTag",
-          "valueSource": "opc"
-        },
-        {
-          "dataType": "Float4",
-          "engUnit": "V",
-          "formatString": "0.0",
-          "name": "Voltage L2-N",
-          "opcItemPath": {
-            "bindType": "parameter",
-            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF3"
-          },
-          "opcServer": "Ignition OPC UA Server",
-          "tagType": "AtomicTag",
-          "valueSource": "opc"
-        },
-        {
-          "dataType": "Float4",
-          "engUnit": "V",
-          "expression": "mean({[.]Voltage L1-N}, {[.]Voltage L2-N}, {[.]Voltage L3-N})",
-          "formatString": "0.0",
-          "name": "Voltage L-N Avg",
-          "tagType": "AtomicTag",
-          "valueSource": "expr"
+          "opcServer": "Ignition OPC UA Server"
         }
       ]
     },
@@ -229,52 +229,52 @@
       "tagType": "Folder",
       "tags": [
         {
-          "dataType": "Float4",
-          "engUnit": "A",
-          "expression": "mean({[.]Current L1}, {[.]Current L2}, {[.]Current L3})",
-          "formatString": "0.00",
-          "name": "Current Avg",
-          "tagType": "AtomicTag",
-          "valueSource": "expr"
-        },
-        {
-          "dataType": "Float4",
-          "engUnit": "A",
-          "formatString": "0.00",
-          "name": "Current L2",
           "opcItemPath": {
             "bindType": "parameter",
             "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF9"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Current L2",
+          "formatString": "0.00",
+          "engUnit": "A",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
         },
         {
-          "dataType": "Float4",
-          "engUnit": "A",
-          "formatString": "0.00",
-          "name": "Current L3",
           "opcItemPath": {
             "bindType": "parameter",
             "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF11"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Current L3",
+          "formatString": "0.00",
+          "engUnit": "A",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
         },
         {
+          "valueSource": "expr",
+          "expression": "mean({[.]Current L1}, {[.]Current L2}, {[.]Current L3})",
           "dataType": "Float4",
-          "engUnit": "A",
+          "name": "Current Avg",
           "formatString": "0.00",
-          "name": "Current L1",
+          "engUnit": "A",
+          "tagType": "AtomicTag"
+        },
+        {
           "opcItemPath": {
             "bindType": "parameter",
             "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF7"
           },
-          "opcServer": "Ignition OPC UA Server",
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "name": "Current L1",
+          "formatString": "0.00",
+          "engUnit": "A",
           "tagType": "AtomicTag",
-          "valueSource": "opc"
+          "opcServer": "Ignition OPC UA Server"
         }
       ]
     }

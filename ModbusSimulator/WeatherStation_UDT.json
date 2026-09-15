@@ -1,0 +1,130 @@
+{
+  "name": "WeatherStation",
+  "parameters": {
+    "FieldName": {
+      "dataType": "String",
+      "value": "WeatherStation"
+    },
+    "UnitId": {
+      "dataType": "Integer",
+      "value": 4
+    },
+    "DeviceName": {
+      "dataType": "String",
+      "value": "WeatherStation"
+    }
+  },
+  "tagType": "UdtType",
+  "tags": [
+    {
+      "name": "Temperature",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF0"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "historyProvider": "ETWSQL01_hst",
+          "historyEnabled": true,
+          "name": "Outdoor Temperature",
+          "formatString": "0.0",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF8"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "historyProvider": "ETWSQL01_hst",
+          "historyEnabled": true,
+          "name": "Dew Point",
+          "formatString": "0.0",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Humidity",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF2"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "historyProvider": "ETWSQL01_hst",
+          "historyEnabled": true,
+          "name": "Relative Humidity",
+          "formatString": "0.0",
+          "engUnit": "%RH",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Wind",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF4"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "historyProvider": "ETWSQL01_hst",
+          "historyEnabled": true,
+          "name": "Wind Speed",
+          "formatString": "0.0",
+          "engUnit": "mph",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.IRF6"
+          },
+          "valueSource": "opc",
+          "dataType": "Float4",
+          "historyProvider": "ETWSQL01_hst",
+          "historyEnabled": true,
+          "name": "Wind Direction",
+          "formatString": "0",
+          "engUnit": "°",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{DeviceName}]{UnitId}.C0"
+          },
+          "valueSource": "opc",
+          "dataType": "Boolean",
+          "name": "Station Healthy",
+          "tagType": "AtomicTag",
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    }
+  ]
+}

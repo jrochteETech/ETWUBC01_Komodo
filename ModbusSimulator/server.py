@@ -8,10 +8,11 @@ from pymodbus.server import StartAsyncTcpServer
 from crah import CRAH
 from power_meter import POWER_METER
 from ths import THS
+from weather_station import WEATHER_STATION
 
 
 # Import a new equipment definition above, then add it to this list.
-EQUIPMENT = [POWER_METER, CRAH, THS]
+EQUIPMENT = [POWER_METER, CRAH, THS, WEATHER_STATION]
 STEP_SECONDS = 0.5
 
 

@@ -47,58 +47,51 @@ def getOverrides(result):
 	return [item.strip() for item in str(result["tagQueryOverrides"]).split(",")]
 
 
-def queryOverrideValues(provider, overrideNames):
-	query = {
-		"options": {
-			"includeUdtMembers": True,
-			"includeUdtDefinitions": False
-		},
-		"condition": {
-			"attributes": {
-				"values": ["override"],
-				"requireAll": True
-			}
-		},
-		"returnProperties": list(overrideNames) + ["tagQueryOverrides"]
-	}
-	return system.tag.query(provider, query)
+def getConfigurationIndex(provider):
+	configByPath = {}
+
+	def addConfigs(configs, parentPath):
+		for sourceConfig in configs:
+			config = dict(sourceConfig)
+			tagName = str(config.get("name", ""))
+			separator = "" if parentPath.endswith("]") else "/"
+			fullPath = "{}{}{}".format(parentPath, separator, tagName)
+			configByPath[fullPath] = config
+			addConfigs(config.get("tags", []), fullPath)
+
+	providerPath = "[{}]".format(provider)
+	addConfigs(system.tag.getConfiguration(providerPath, True), providerPath)
+	return configByPath
 
 
-def buildOverrideConfigs(results):
+def buildOverrideConfigs(results, configByPath):
 	overrideConfigs = []
+	missingPaths = []
 	for result in results:
-		overrides = getOverrides(result)
-		if "alarms" not in overrides:
-			continue
-
 		fullPath = str(result["fullPath"])
 		if "]_types_/" in fullPath:
 			continue
 
 		parentPath, tagName = fullPath.rsplit("/", 1)
-		config = {"name": tagName}
-		for override in overrides:
-			if override == "alarms":
-				continue
-			value = result[override]
-			if override == "value":
-				value = value.getValue()
-			config[override] = value
+		sourceConfig = configByPath.get(fullPath)
+		if sourceConfig is None:
+			missingPaths.append(fullPath)
+			continue
+		config = dict(sourceConfig)
+		config["name"] = tagName
+		config.pop("alarms", None)
 		overrideConfigs.append({
 			"parentPath": parentPath,
 			"fullPath": fullPath,
 			"config": config
 		})
-	return overrideConfigs
+	return overrideConfigs, missingPaths
 
 
 def removeAlarmOverrides(provider, dryRun, outputPath):
 	alarmOverrideResults = queryAlarmOverrides(provider)
-	overrideNames = set()
-	for result in alarmOverrideResults:
-		overrideNames.update(getOverrides(result))
-	results = queryOverrideValues(provider, overrideNames)
-	overrideConfigs = buildOverrideConfigs(results)
+	configByPath = getConfigurationIndex(provider)
+	overrideConfigs, missingPaths = buildOverrideConfigs(alarmOverrideResults, configByPath)
 	total = len(overrideConfigs)
 	processed = 0
 	failed = 0
@@ -106,6 +99,9 @@ def removeAlarmOverrides(provider, dryRun, outputPath):
 	mode = "DRY RUN" if dryRun else "APPLY"
 
 	print("Alarm overrides found: {}".format(total))
+	print("Configurations not found: {}".format(len(missingPaths)))
+	for missingPath in missingPaths:
+		print("[SKIPPED] Configuration not found: {}".format(missingPath))
 	print("Mode: {}".format(mode))
 
 	for overrideConfig in overrideConfigs:

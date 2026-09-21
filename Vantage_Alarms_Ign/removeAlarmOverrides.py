@@ -8,17 +8,7 @@ def csvEscape(value):
 	return u'"{}"'.format(text.replace(u'"', u'""'))
 
 
-def exportResults(rows):
-	timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
-	outputPath = system.file.saveFile(
-		"alarm_override_removal_results_{}.csv".format(timestamp),
-		"csv",
-		"CSV Files"
-	)
-	if outputPath is None:
-		print("CSV export cancelled.")
-		return None
-
+def exportResults(rows, outputPath):
 	columns = ["timestamp", "provider", "mode", "tagPath", "status", "details"]
 	lines = [u",".join([csvEscape(column) for column in columns])]
 	for row in rows:
@@ -98,7 +88,7 @@ def groupByParent(results):
 	return grouped
 
 
-def removeAlarmOverrides(provider, dryRun, batchSize):
+def removeAlarmOverrides(provider, dryRun, batchSize, outputPath):
 	alarmOverrideResults = queryAlarmOverrides(provider)
 	overrideNames = set()
 	for result in alarmOverrideResults:
@@ -154,13 +144,15 @@ def removeAlarmOverrides(provider, dryRun, batchSize):
 	print("=" * 50)
 	print("Processed: {}".format(processed))
 	print("Failed:    {}".format(failed))
-	exportResults(auditRows)
+	exportResults(auditRows, outputPath)
 
 provider = "default"
 dryRun = True
 batchSize = 100
+timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
+outputPath = r"C:\AlarmReports\{}_alarm_override_removal_results_{}.csv".format(provider, timestamp)
 
 startTime = system.date.now().getTime()
-removeAlarmOverrides(provider, dryRun, batchSize)
+removeAlarmOverrides(provider, dryRun, batchSize, outputPath)
 endTime = system.date.now().getTime()
 print("Total Time: {} s".format((endTime - startTime) / 1000.0))

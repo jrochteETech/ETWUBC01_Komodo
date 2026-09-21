@@ -65,17 +65,7 @@ def csvEscape(value):
 	return u'"{}"'.format(text.replace(u'"', u'""'))
 
 
-def exportResults(rows):
-	timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
-	outputPath = system.file.saveFile(
-		"alarm_override_results_{}.csv".format(timestamp),
-		"csv",
-		"CSV Files"
-	)
-	if outputPath is None:
-		print("CSV export cancelled.")
-		return None
-
+def exportResults(rows, outputPath):
 	differenceColumns = sorted(set([
 		key
 		for row in rows
@@ -186,7 +176,7 @@ def gettypeid(provider, tagPath, udtInstances, configCache):
 	return None
 
 
-def main(provider):
+def main(provider, outputPath):
 	startTime = system.date.now().getTime()
 	placeCount = 0
 	instanceAlarmCount = 0
@@ -254,7 +244,7 @@ def main(provider):
 	#	print(each)
 		
 	endTime = system.date.now().getTime()
-	outputPath = exportResults(missMatchingAlarms)
+	outputPath = exportResults(missMatchingAlarms, outputPath)
 
 	print("="*50)
 
@@ -265,4 +255,6 @@ def main(provider):
 		print("CSV exported to:      " + outputPath)
 
 provider = "default"
-main(provider)
+timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
+outputPath = r"C:\AlarmReports\{}_alarm_override_results_{}.csv".format(provider, timestamp)
+main(provider, outputPath)

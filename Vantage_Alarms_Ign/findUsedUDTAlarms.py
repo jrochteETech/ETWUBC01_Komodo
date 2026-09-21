@@ -97,17 +97,7 @@ def getAlarmValue(alarm, key, defaultValue):
     return value
 
 
-def exportAlarms(alarmsByUDT):
-    timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
-    outputPath = system.file.saveFile(
-        "used_udt_alarms_{}.csv".format(timestamp),
-        "csv",
-        "CSV Files"
-    )
-    if outputPath is None:
-        print("CSV export cancelled.")
-        return None
-
+def exportAlarms(alarmsByUDT, outputPath):
     columns = [
         "UDT Path",
         "Path",
@@ -148,6 +138,8 @@ def exportAlarms(alarmsByUDT):
 
 
 theProvider = "default"
+timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
+theOutputPath = r"C:\AlarmReports\{}_used_udt_alarms_{}.csv".format(theProvider, timestamp)
 
 usedUDTs = findUsedUDTs(theProvider)
 alarmsByUDT = getUsedUDTAlarms(theProvider, usedUDTs)
@@ -165,5 +157,5 @@ print("Alarm Tags Found: {}".format(alarmTagCount))
 print("Total Alarms Found: {}".format(alarmCount))
 print("-" * 25)
 
-outputPath = exportAlarms(alarmsByUDT)
+outputPath = exportAlarms(alarmsByUDT, theOutputPath)
 print("CSV written to: {}".format(outputPath))

@@ -80,6 +80,8 @@ def buildOverrideConfigs(results, configByPath):
 		config = dict(sourceConfig)
 		config["name"] = tagName
 		config.pop("alarms", None)
+		config.pop("path", None)
+		config.pop("tags", None)
 		overrideConfigs.append({
 			"parentPath": parentPath,
 			"fullPath": fullPath,
@@ -88,7 +90,7 @@ def buildOverrideConfigs(results, configByPath):
 	return overrideConfigs, missingPaths
 
 
-def removeAlarmOverrides(provider, dryRun, outputPath):
+def removeAlarmOverrides(provider, DRY_RUN, outputPath):
 	alarmOverrideResults = queryAlarmOverrides(provider)
 	configByPath = getConfigurationIndex(provider)
 	overrideConfigs, missingPaths = buildOverrideConfigs(alarmOverrideResults, configByPath)
@@ -96,7 +98,7 @@ def removeAlarmOverrides(provider, dryRun, outputPath):
 	processed = 0
 	failed = 0
 	auditRows = []
-	mode = "DRY RUN" if dryRun else "APPLY"
+	mode = "DRY RUN" if DRY_RUN else "APPLY"
 
 	print("Alarm overrides found: {}".format(total))
 	print("Configurations not found: {}".format(len(missingPaths)))
@@ -108,7 +110,7 @@ def removeAlarmOverrides(provider, dryRun, outputPath):
 		parentPath = overrideConfig["parentPath"]
 		fullPath = overrideConfig["fullPath"]
 		config = overrideConfig["config"]
-		if dryRun:
+		if DRY_RUN:
 			print("[DRY RUN] {}".format(fullPath))
 			auditRows.append({
 				"timestamp": system.date.format(system.date.now(), "yyyy-MM-dd HH:mm:ss.SSS"),
@@ -145,11 +147,11 @@ def removeAlarmOverrides(provider, dryRun, outputPath):
 
 
 provider = "default"
-dryRun = True
+DRY_RUN = True
 timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
 outputPath = r"C:\AlarmReports\{}_alarm_override_removal_results_{}.csv".format(provider, timestamp)
 
 startTime = system.date.now().getTime()
-removeAlarmOverrides(provider, dryRun, outputPath)
+removeAlarmOverrides(provider, DRY_RUN, outputPath)
 endTime = system.date.now().getTime()
 print("Total Time: {} s".format((endTime - startTime) / 1000.0))

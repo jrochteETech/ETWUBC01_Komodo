@@ -151,7 +151,7 @@ def removeAlarmOverrides(provider, dryRun, outputPath):
 provider = "default"
 dryRun = True
 timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
-outputPath = r"C:\AlarmReports\{}_alarm_override_removal_no_batch_results_{}.csv".format(provider, timestamp)
+outputPath = r"C:\AlarmReports\{}_alarm_override_removal_results_{}.csv".format(provider, timestamp)
 
 startTime = system.date.now().getTime()
 removeAlarmOverrides(provider, dryRun, outputPath)

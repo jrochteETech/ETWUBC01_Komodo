@@ -1,0 +1,14 @@
+services:
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
+    driver: bridge

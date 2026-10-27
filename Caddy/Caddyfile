@@ -1,7 +1,9 @@
 :80 {
     route /l10* {
         uri strip_prefix /l10
-        reverse_proxy l10:8111
+        reverse_proxy l10:8111 {
+            header_up Host {host}
+    }
     }
 
 }

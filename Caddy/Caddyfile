@@ -1,9 +1,9 @@
 :80 {
-    route /l10* {
-        uri strip_prefix /l10
-        reverse_proxy l10:8111 {
-            header_up Host {host}
-    }
+    @l10devroot path /l10-dev
+    redir @l10devroot /l10-dev/ 308
+
+    handle /l10-dev/* {
+        reverse_proxy l10-dev:8111
     }
 
 }

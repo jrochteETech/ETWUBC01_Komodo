@@ -1,4 +1,4 @@
-etwubc01 {
+:80 {
     @l10devroot path /l10-dev
     redir @l10devroot /l10-dev/ 308
 

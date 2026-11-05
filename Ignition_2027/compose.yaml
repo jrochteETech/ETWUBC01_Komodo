@@ -1,0 +1,39 @@
+services:
+  ignition-prod:
+    image: inductiveautomation/ignition:2027.2.0-beta1
+    ports:
+      - "8089:8088"   # HTTP
+      - "8044:8043"   # HTTPS
+      # - "8050:8050" # MQTT
+      # - "8060:8060"   # GAN
+      # - "62541:62541" # OPC
+    environment:
+      ACCEPT_IGNITION_EULA: "Y"
+      IGNITION_EDITION: "standard"
+      DISABLE_QUICKSTART: true
+      GATEWAY_ADMIN_USERNAME: "admin"
+      GATEWAY_ADMIN_PASSWORD: "password"
+
+      # GATEWAY_DEFAULT_PORTS: "true"
+      # GATEWAY_HTTP_PORT: "8088"
+      # GATEWAY_HTTPS_PORT: "8043"
+      # GATEWAY_GAN_PORT: "8060"
+
+      # TZ: "America/Detroit"
+    command: >
+      -n ignition-2027-beta-test
+      -a etwubc01
+      -h 8089
+      -s 8044
+      -- 
+      # -Dignition.allowunsignedmodules=true
+    volumes:
+      - ignition-2027:/usr/local/bin/ignition/data
+    networks:
+      - ignition-net
+
+volumes:
+  ignition-2027:
+
+networks:
+  ignition-net:

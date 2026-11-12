@@ -1,6 +1,6 @@
 # Run this script in the Ignition Designer Script Console.
-# It finds UDT definitions that have instances, then returns alarms from only
-# those UDT definitions.
+# Set usedOnly to True for UDT definitions that have instances, or False for
+# all UDT definitions in the provider. Exports alarms from those definitions.
 
 import system
 from java.lang import String as JString
@@ -42,6 +42,26 @@ def findUsedUDTs(provider):
         usedUDTs.add(getRelativeTypePath(provider, result["typeId"]))
 
     return sorted(usedUDTs)
+
+
+def findAllUDTs(provider):
+    query = {
+        "options": {
+            "includeUdtMembers": False,
+            "includeUdtDefinitions": True
+        },
+        "condition": {
+            "path": "*_types_*",
+            "tagType": "UdtType"
+        },
+        "returnProperties": []
+    }
+
+    results = system.tag.query(provider, query)
+    return sorted(set([
+        getRelativeTypePath(provider, result["fullPath"])
+        for result in results
+    ]))
 
 
 def getUsedUDTAlarms(provider, usedUDTs):
@@ -138,11 +158,13 @@ def exportAlarms(alarmsByUDT, outputPath):
 
 
 theProvider = "default"
+usedOnly = True  # False includes definitions with no instances.
+udtScope = "used" if usedOnly else "all"
 timestamp = system.date.format(system.date.now(), "yyyyMMddHHmmss")
-theOutputPath = r"C:\AlarmReports\{}_used_udt_alarms_{}.csv".format(theProvider, timestamp)
+theOutputPath = r"C:\AlarmReports\{}_{}_udt_alarms_{}.csv".format(theProvider, udtScope, timestamp)
 
-usedUDTs = findUsedUDTs(theProvider)
-alarmsByUDT = getUsedUDTAlarms(theProvider, usedUDTs)
+udtPaths = findUsedUDTs(theProvider) if usedOnly else findAllUDTs(theProvider)
+alarmsByUDT = getUsedUDTAlarms(theProvider, udtPaths)
 alarmTagCount = sum([len(alarmTags) for alarmTags in alarmsByUDT.values()])
 alarmCount = sum([
     len(alarmTag["alarms"])
@@ -151,8 +173,8 @@ alarmCount = sum([
 ])
 
 print("-" * 25)
-print("Used UDTs Found: {}".format(len(usedUDTs)))
-print("Used UDTs with Alarms: {}".format(len(alarmsByUDT)))
+print("{} UDTs Found: {}".format(udtScope.capitalize(), len(udtPaths)))
+print("{} UDTs with Alarms: {}".format(udtScope.capitalize(), len(alarmsByUDT)))
 print("Alarm Tags Found: {}".format(alarmTagCount))
 print("Total Alarms Found: {}".format(alarmCount))
 print("-" * 25)

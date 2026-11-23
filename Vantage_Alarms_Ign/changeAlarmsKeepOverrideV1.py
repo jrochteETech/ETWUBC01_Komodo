@@ -3,11 +3,18 @@
 # V2 - Adds priority/label reporting, medium-priority validation, and custom-email cleanup.
 # V3 - Adds optional alarm-label updates and summary counters for changed fields.
 # V4 - Removes priority/label overrides from selected UDT-definition alarms.
+# V5 - Uses exported configuration to avoid writing resolved tag properties.
+# V6 - Handles single-tag exports and reports ambiguous alarm readback for review.
+# V7 - Reports alarm priority and label before and after each live write.
 # Run in Ignition's Script Console. CSV columns: path,alarmName.
 # Paths are relative to [PROVIDER]_types_ (for example, DerivedUDT/Status).
 # Use on alarms inherited from a parent UDT; base alarms revert to defaults.
-# Other alarm properties and tag configuration are preserved. DRY_RUN defaults to True.
+# Other exported alarm properties and tag overrides are preserved. DRY_RUN defaults to True.
+# Alarm export can include inherited values; verify inheritance in the Designer.
+# Results contain configured values, including bindings; missing values are marked.
+# Dry runs leave newPriority/newLabel blank because no write was performed.
 # Remaining overridden properties keep the alarm overridden.
+# Requires Ignition 8.1.8 or later for string-returning exportTags.
 
 import system
 from java.lang import String as JString
@@ -100,7 +107,7 @@ def read_decisions(provider, path):
         except ValueError:
             return None
     idx_path   = col("path")
-    idx_name   = col("alarmname")
+    idx_name   = col("alarmName")
     missing_headers = []
     if idx_path   is None: missing_headers.append("path")
     if idx_name   is None: missing_headers.append("alarmName")
@@ -149,6 +156,42 @@ def read_decisions(provider, path):
     return decisions, skipped
 
 
+def get_exported_config(tag_path):
+    exported = system.tag.exportTags(tagPaths=[tag_path], recursive=False)
+    if not exported:
+        raise ValueError("Tag export returned no configuration: {}".format(tag_path))
+    data = system.util.jsonDecode(exported)
+    if not isinstance(data, dict):
+        raise ValueError("Invalid tag export for {}.".format(tag_path))
+    if "name" in data:
+        config = data
+    else:
+        tags = data.get("tags")
+        if not isinstance(tags, list) or len(tags) != 1:
+            raise ValueError("Expected one tag in export for {}.".format(tag_path))
+        config = tags[0]
+    if not isinstance(config, dict) or config.get("name") != tag_path.rsplit("/", 1)[-1]:
+        raise ValueError("Tag export did not contain the expected tag: {}".format(tag_path))
+    if config.get("tagType") == "Unknown":
+        raise ValueError("Tag export has an unknown tag type: {}".format(tag_path))
+    return config
+
+
+def get_report_values(tag_path, alarm_name, alarm):
+    effective_alarm = alarm
+    if "priority" not in alarm or "label" not in alarm:
+        configs = system.tag.getConfiguration(tag_path, False)
+        alarms = configs[0].get("alarms", []) if configs else []
+        matches = [item for item in alarms if item.get("name", "") == alarm_name]
+        if len(matches) != 1:
+            raise ValueError("Cannot read alarm '{}' configuration for {}.".format(alarm_name, tag_path))
+        effective_alarm = matches[0]
+    return (
+        alarm.get("priority", effective_alarm.get("priority", u"<not returned>")),
+        alarm.get("label", effective_alarm.get("label", u"<not returned>")),
+    )
+
+
 def apply_decision(decision, current, total, dry_run, provider):
     tag_path   = "[" + provider + "]_types_/" + decision["path"]
     alarm_name = decision["alarmName"]
@@ -164,14 +207,24 @@ def apply_decision(decision, current, total, dry_run, provider):
         decision["message"] = message
         print(u"  [{}] {}".format(status, message))
     try:
-        config = system.tag.getConfiguration(tag_path, False)
-        if not config:
-            set_result("ERROR", u"Tag not found or no config returned.")
-            return False, False, False
-
-        tag_config = dict(config[0])
+        tag_config = get_exported_config(tag_path)
         alarms = [dict(alarm) for alarm in tag_config.get("alarms", [])]
         matches = [alarm for alarm in alarms if alarm.get("name", "") == alarm_name]
+        if not matches:
+            effective = system.tag.getConfiguration(tag_path, False)
+            effective_alarms = effective[0].get("alarms", []) if effective else []
+            effective_matches = [item for item in effective_alarms if item.get("name", "") == alarm_name]
+            if len(effective_matches) == 1:
+                effective_alarm = effective_matches[0]
+                decision["previousPriority"] = effective_alarm.get("priority", u"<not returned>")
+                decision["previousLabel"] = effective_alarm.get("label", u"<not returned>")
+                if not dry_run:
+                    decision["newPriority"] = decision["previousPriority"]
+                    decision["newLabel"] = decision["previousLabel"]
+                set_result("UNCHANGED", u"Alarm has no local configuration; nothing to remove.")
+                return True, False, False
+            set_result("ERROR", u"Alarm '{}' not found on tag.".format(alarm_name))
+            return False, False, False
         if len(matches) != 1:
             set_result("ERROR", u"Expected one configured alarm '{}'; found {}.".format(alarm_name, len(matches)))
             return False, False, False
@@ -179,17 +232,19 @@ def apply_decision(decision, current, total, dry_run, provider):
         alarm = matches[0]
         priority_changed = "priority" in alarm
         label_changed = "label" in alarm
-        decision["previousPriority"] = alarm.get("priority", u"")
-        decision["previousLabel"] = alarm.get("label", u"")
+        decision["previousPriority"], decision["previousLabel"] = get_report_values(tag_path, alarm_name, alarm)
         if not priority_changed and not label_changed:
-            set_result("UNCHANGED", u"No priority or label overrides in configuration.")
+            if not dry_run:
+                decision["newPriority"] = decision["previousPriority"]
+                decision["newLabel"] = decision["previousLabel"]
+            set_result("UNCHANGED", u"No priority or label fields in exported alarm configuration.")
             return True, False, False
 
         alarm.pop("priority", None)
         alarm.pop("label", None)
         tag_config["alarms"] = alarms
         if dry_run:
-            set_result("DRY RUN", u"Would remove priority/label overrides, preserving other alarm properties.")
+            set_result("DRY RUN", u"Would remove priority/label fields, preserving other exported alarm properties.")
             return True, priority_changed, label_changed
 
         # Merge mode would leave omitted overrides in place.
@@ -199,17 +254,19 @@ def apply_decision(decision, current, total, dry_run, provider):
             set_result("ERROR", u"Configuration write failed: {}".format(qualities))
             return False, False, False
 
-        updated = system.tag.getConfiguration(tag_path, False)
-        updated_alarms = updated[0].get("alarms", []) if updated else []
+        updated = get_exported_config(tag_path)
+        updated_alarms = updated.get("alarms", [])
         updated_matches = [item for item in updated_alarms if item.get("name", "") == alarm_name]
         if len(updated_matches) != 1:
             set_result("ERROR", u"Write completed, but alarm entry was not preserved on readback.")
             return False, False, False
-        if "priority" in updated_matches[0] or "label" in updated_matches[0]:
-            set_result("ERROR", u"Write completed, but priority/label remain in configuration on readback.")
-            return False, False, False
-        if dict(updated_matches[0]) != alarm:
+        updated_alarm = dict(updated_matches[0])
+        decision["newPriority"], decision["newLabel"] = get_report_values(tag_path, alarm_name, updated_alarm)
+        if any(key not in updated_alarm or updated_alarm[key] != value for key, value in alarm.items()):
             set_result("ERROR", u"Write completed, but other alarm properties differ on readback.")
+            return False, False, False
+        if "priority" in updated_alarm or "label" in updated_alarm:
+            set_result("CHECK", u"Write accepted. Export includes priority/label, which may be inherited; verify their override status in the Designer.")
             return False, False, False
 
         set_result("OK", u"Priority/label overrides removed; alarm entry and other properties preserved.")
@@ -228,7 +285,7 @@ def csv_escape(value):
 
 
 def write_results(output_path, all_rows):
-    fieldnames = ["path", "alarmName", "previousPriority", "previousLabel", "status", "message", "priorityChanged", "labelChanged"]
+    fieldnames = ["path", "alarmName", "previousPriority", "previousLabel", "newPriority", "newLabel", "status", "message", "priorityChanged", "labelChanged"]
     lines = [u",".join(fieldnames)]
     for row in all_rows:
         lines.append(u",".join([csv_escape(row.get(col, u"")) for col in fieldnames]))
@@ -259,17 +316,20 @@ def main():
         return
     success = 0
     failed  = 0
+    needs_check = 0
     priority_changed_count = 0
     label_changed_count = 0
     for current, decision in enumerate(decisions, start=1):
         decision_success, priority_changed, label_changed = apply_decision(decision, current, total, DRY_RUN, PROVIDER)
-        decision["priorityChanged"] = priority_changed
-        decision["labelChanged"] = label_changed
+        decision["priorityChanged"] = u"" if decision["status"] == "CHECK" else priority_changed
+        decision["labelChanged"] = u"" if decision["status"] == "CHECK" else label_changed
         if priority_changed:
             priority_changed_count += 1
         if label_changed:
             label_changed_count += 1
-        if decision_success:
+        if decision["status"] == "CHECK":
+            needs_check += 1
+        elif decision_success:
             success += 1
         else:
             failed += 1
@@ -278,6 +338,7 @@ def main():
 
     print("\n" + "=" * 12 + " Complete " + "=" * 38)
     print("Success:              {}".format(success))
+    print("Needs verification:   {}".format(needs_check))
     print("Failed/Skipped:       {}".format(failed + len(skipped)))
     print("=" * 60)
     print("Priority Overrides{}: {}".format(" Planned" if DRY_RUN else " Removed", priority_changed_count))
@@ -290,6 +351,8 @@ def main():
 
     if (failed + len(skipped)) > 0:
         print("Errors occured during run. Review output csv for details.")
+    if needs_check:
+        print("Verify priority/label inheritance in the Designer for CHECK rows.")
 
     if DRY_RUN:
         print("\n*** DRY_RUN = True. Set DRY_RUN = False to apply changes. ***")

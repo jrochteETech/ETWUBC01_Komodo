@@ -1,0 +1,778 @@
+{
+  "documentation": "Revision Notes:\n1.1.0 - Fix Diagnostic custom properties \n1.2.0 - Added OOS Script for parent/child enable\n1.2.1 - Updated OOS Script fucntion to have logger\n1.3.0 - Change expresson of \"In_Alarm\" tag to a run a script on gateway\n1.3.1 - Made \"Site\" paremeter pull informatoin from parent \"{Site}\" Parameter\n1.3.2 - Changed alarm pipeline on \"Is_Connected\" tag from \"Tag\" binding to \"Expression\"\n1.3.3 - Updated \"Maintenance\" script to remove overide\n1.3.4 - \"Maintenance\" script  changes to accomodate new UI\n1.3.5 - \"Maintenance\" script minor update to handle audit log errors.\n1.3.6 - \"Maintenance\" moved the audit log write to bottom, commented out \".AlarmEvalEnabled\" lines.\n1.4.0 - \"Is_Connected\" tag changed from OPC to Expression tag. Also added a third condition to the \"Loss of comms\" alarm enable condition.\n1.4.1 - A third condition was added to the Modbus and CLX \"Is_Connected\" tag expression for MLX devices\n1.5.0-dev - Developing CX-Mode Intergtration\n1.5.1 - Replace Alarms/In_Alarm Value expression from runScript to isAlarmActive expression",
+  "name": "Modbus_1v0",
+  "parameters": {
+    "FieldName": {
+      "dataType": "String",
+      "value": {
+        "bindType": "parameter",
+        "binding": "{FieldName}"
+      }
+    },
+    "Site": {
+      "dataType": "String",
+      "value": {
+        "bindType": "parameter",
+        "binding": "{Site}"
+      }
+    },
+    "OPC Server": {
+      "dataType": "String",
+      "value": "Ignition OPC UA Server"
+    },
+    "isParent": {
+      "dataType": "Integer",
+      "value": 0
+    },
+    "Model": {
+      "dataType": "String",
+      "value": {
+        "bindType": "parameter",
+        "binding": "{Model}"
+      }
+    },
+    "Vision_Popup_Path": {
+      "dataType": "String",
+      "value": ""
+    },
+    "Device": {
+      "dataType": "String",
+      "value": {
+        "bindType": "parameter",
+        "binding": "{Device}"
+      }
+    },
+    "Revision": {
+      "dataType": "String",
+      "value": "1.5.0-dev"
+    },
+    "TC": {
+      "dataType": "String",
+      "value": {
+        "bindType": "parameter",
+        "binding": "{TC}"
+      }
+    }
+  },
+  "tagType": "UdtType",
+  "tags": [
+    {
+      "name": "Display",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Vision_Popup_Path}"
+          },
+          "valueSource": "memory",
+          "Display_Type": "String_Setpoint_1v0",
+          "dataType": "String",
+          "name": "Vision_Popup_Path",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Device}"
+          },
+          "valueSource": "memory",
+          "Display_Type": "String_Setpoint_1v0",
+          "dataType": "String",
+          "name": "PME_Device_Name",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "String_Setpoint_1v0",
+          "dataType": "String",
+          "name": "Feed_Label",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "Button_Toggle_1v0",
+          "dataType": "Boolean",
+          "name": "Web_Enable",
+          "value": false,
+          "tagGroup": "1m_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "String_Setpoint_1v0",
+          "dataType": "String",
+          "name": "Popup_Data_A",
+          "value": "",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "String_Setpoint_1v0",
+          "dataType": "String",
+          "name": "PME_Server",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "Button_Toggle_1v0",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\t\n\tValue \u003d currentValue.value\n\n\tsystem.tag.writeBlocking (\"[.]PME_Device_Name\"+\".Enabled\", Value)\n\tsystem.tag.writeBlocking (\"[.]PME_Server\"+\".Enabled\", Value)\n\t\t"
+            }
+          ],
+          "dataType": "Boolean",
+          "name": "PME_Enable",
+          "value": false,
+          "tagGroup": "1m_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "dataType": "StringArray",
+          "name": "Trend_Paths",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "String_Setpoint_1v0",
+          "dataType": "String",
+          "name": "Perspective_Popup_Path",
+          "value": "Core/Popups/Universal/Universal_Popup",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "String_Setpoint_1v0",
+          "dataType": "String",
+          "name": "Popup_Data_B",
+          "value": "",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        }
+      ]
+    },
+    {
+      "name": "Alarms",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "valueSource": "memory",
+          "Display_Type": "Button_Toggle_1v0",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\n\t# If the value has changed\n\tif previousValue !\u003d currentValue and initialChange \u003d\u003d False:\n\t\t#Define the logger\n\t\tlogger \u003d system.util.getLogger(\u0027OOS Parent-Child Tag Change Event Script\u0027)\n\t\t\n\t\t#Get the value of the isParent parameter\n\t\tisParent \u003d tag[\u0027parameters\u0027][\u0027isParent\u0027]\n\t\t#Only execute if isParent parameter is set to one\n\t\tif isParent:\n\t\t\t\n\t   \t\t# Extract the parent UDT path\n\t\t\tparent_udt_path \u003d \"/\".join(tagPath.split(\"/\")[:-3])\n\t\t\t#print parent_udt_path\n\t\t\t\n\t\t\t# Browse the tags recursively to find the child OOS tag\n\t\t\tresults \u003d system.tag.browse(parent_udt_path, {\"name\": \"OOS\", \"recursive\": True, \"valueSource\":\"memory\"})\n\t\t\t\n\t\t\t#Empty lists for tag paths and values\n\t\t\tpaths \u003d []\n\t\t\tvalue \u003d []\n\t\t\t# Write the current value to each found child tag\n\t\t\tfor result in results.getResults():\n\t\t\t\ttagPath\u003d str(result[\u0027fullPath\u0027])\n\t\t\t\t#Make a list of all the tag paths\n\t\t\t\tpaths.append(tagPath)\n\t\t\t\t\n\t\t\t\t#Make a list of all the values\n\t\t\t\tvalue.append(currentValue)\n\t\t\t\n\t\t\t#Use write blocking fucntion to write to a block of the tags\n\t\t\tsystem.tag.writeBlocking(paths, value)\n\t\t\tlogger.info(\"Script Executed successfully!\")\n"
+            }
+          ],
+          "dataType": "Boolean",
+          "name": "OOS",
+          "historyEnabled": false,
+          "value": false,
+          "tagGroup": "1s_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "String_Extra_Long_1v0",
+          "dataType": "String",
+          "name": "Pipeline",
+          "value": "AZ14/SiteOps",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "expr",
+          "expression": "\"Last Time Maintenance Mode Status Was Checked : \" + now ()",
+          "Maintenance_Reason": "",
+          "tagGroup": "1s_Direct",
+          "tagType": "AtomicTag",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\t##Define logger\n\t\tlog \u003d system.util.getLogger(\"Maintenance Mode\")\n\t\n\t\t## Define Variables\t\n\t\tEnd_Time \u003d system.tag.readBlocking(tagPath+\".Maintenance_End_Time\")[0].value\n\t\tReason \u003d system.tag.readBlocking(tagPath+\".Maintenance_Reason\" )[0].value\n\t\tcurrentMode \u003d system.tag.readBlocking( tagPath+\".Maintenance_Mode_Active\" )[0].value\n\t\tuser \u003d system.tag.readBlocking(\"[System]Client/User/Username.Value\")[0].value\n\t\t\n\t\tdiff \u003d system.date.hoursBetween(system.date.now(), system.date.parse(End_Time))\n\t\t\n\t\tdoNotOverride \u003d [\u0027dataType\u0027, \u0027enabled\u0027, \u0027engLow\u0027, \u0027expression\u0027, \u0027executionMode\u0027, \u0027historyEnabled\u0027, \u0027historyProvider\u0027, \u0027historyTagGroup\u0027, \u0027opcItemPath\u0027, \u0027opcServer\u0027, \u0027readOnly\u0027, \u0027readPermissions\u0027, \u0027sampleMode\u0027, \u0027storageProvider\u0027,\u0027tagGroup\u0027, \u0027valueSource\u0027,\u0027writePermissions\u0027]\n\t\t\n\t\t#check to if End_time is after now\n\t\tif  system.date.isAfter (system.date.parse( End_Time), system.date.now()):\n\t\t\t## if more than 8 hours selected, set end time to max 8 hours\n\t\t\tif diff \u003e 8:\n\t\t\t\tsystem.tag.writeBlocking(tagPath+\".Maintenance_End_Time\",system.date.addHours(system.date.now(), 8))\n\t\t\t\tEnd_Time \u003d system.tag.readBlocking( tagPath+\".Maintenance_End_Time\" )\n\t\t\t\t\n\t\t\t#initiate maintenance mode\t \n\t\t\tif currentMode \u003d\u003d False:\n\t\t\t\tsystem.tag.writeBlocking( tagPath+\".Maintenance_Mode_Active\" , True )\n\t\t\t\t\n\t\t\t\t#log action to logger and audit log\n\t\t\t\tlog.info(\"Maintenance Mode Active: %s, User: %s, Reason: %s\" %(tagPath, user, Reason))\n\t\t\t\t\n\t\t\t\tx \u003d system.tag.browse(tagPath.split(\"/Config\")[0],filter \u003d {\u0027tagType\u0027:\u0027AtomicTag\u0027,\"recursive\":True})\n\t\t\t\t\n\t\t\t\t#get all alarm paths\n\t\t\t\talarmsList \u003d []\n\t\t\t\tfor i in x:\n\t\t\t\t\tif \"alarm\" in str(i[\u0027attributes\u0027]):\n\t\t\t\t\t\talarms \u003d system.tag.readBlocking(str(i[\u0027fullPath\u0027])+\".Alarms\")[0].value.getDefinitions()\n\t\t\t\t\t\tfor t in alarms:\n\t\t\t\t\t\t\talarmsList.append(str(i[\u0027fullPath\u0027])+\"/Alarms/\" + str(t)+\".Priority\")\n\t\t\t\treads \u003d system.tag.readBlocking(alarmsList)\n\t\t\t\t\n\t\t\t\t#get all priorities\n\t\t\t\tpriorities \u003d []\n\t\t\t\tfor i in range(len(reads)):\n\t\t\t\t\tpriorities.append({str(alarmsList[i]):reads[i].value})\n\t\t\t\t\tconfigPath \u003d  alarmsList[i].rsplit(\"/Alarms/\",1)[0]\n\t\t\t\t\ttagConfig \u003d system.tag.getConfiguration(configPath,True)\n\t\t\t\t\t#update priority to diagnostic\n\t\t\t\t\tfor i in tagConfig[0][\u0027alarms\u0027]:\n\t\t\t\t\t\ti.update({\u0027priority\u0027:\"Diagnostic\"})\n\t\t\t\t\t#do not override certain properities\t\n\t\t\t\t\tfor k in doNotOverride:\n\t\t\t\t\t\tif k in tagConfig[0].keys():\n\t\t\t\t\t\t\ttagConfig[0].pop(k)\t\t\n\t\t\t\t\t#write back to tag\n\t\t\t\t\tsystem.tag.configure(configPath.rsplit(\"/\",1)[0], tagConfig,\"m\")\n\t\t\t\tsystem.tag.writeBlocking(tagPath+\".Alarm_Priority_Array\", system.util.jsonEncode(priorities))\n\t\t\t\t\n\t#\t\t\tfor i in alarmsList:\n\t#\t\t\t\taaPath \u003d str(i).rsplit(\"/Alarms/\",1)[0]+\".AlarmEvalEnabled\"\n\t#\t\t\t\tif system.tag.writeBlocking(aaPath,False) \u003d\u003d 2:\n\t#\t\t\t\t\tsystem.tag.writeBlocking(aaPath,True)\t\n\t\t\t\t\n\t\t\t\t#record priorities in logger\t\t\t\t\n\t\t\t\tlog.info(\"Maintenance Mode Stored Piorities: Stored Priorites: %s\" %(str(priorities)))\n\t\t\t\tsystem.util.audit(action \u003d \"Maintenance Mode Activated. Reason: \"+ Reason, actionTarget \u003d tagPath)\n\t\t\n\t\t#check if End_Time is before now. Mainteance mode should deactivate.\t\t\n\t\telif system.date.isBefore(system.date.parse( End_Time), system.date.now()):\n\t\t\n\t\t\t#change mode to false\n\t\t\tif currentMode \u003d\u003d True: \n\t\t\t\tsystem.tag.writeBlocking( tagPath+\".Maintenance_Mode_Active\" , False )\n\t\t\t\tx \u003d system.tag.browse(tagPath.split(\"/Config\")[0],filter \u003d {\u0027tagType\u0027:\u0027AtomicTag\u0027,\"recursive\":True})\n\t\t\t\talarmsList \u003d system.tag.read(tagPath+\".Alarm_Priority_Array\").value\n\t\t\t\t\n\t\t\t\t#write back to alarms the correct priority\n\t\t\t\tfor alarm in x:\n\t\t\t\t\tif \"alarm\" in str(alarm[\u0027attributes\u0027]):\n\t\t\t\t\t\ttagConfig \u003d system.tag.getConfiguration(alarm[\u0027fullPath\u0027], True)\n\t\t\t\t\t\tfor i in tagConfig[0].get(\u0027alarms\u0027):\n\t\t\t\t\t\t\tt \u003d str(alarm[\u0027fullPath\u0027]) +\"/Alarms/\"+ str(i[\u0027name\u0027]+\".Priority\")\n\t\t\t\t\t\t\tfor match in alarmsList:\n\t\t\t\t\t\t\t\tif t in match.keys():\n\t\t\t\t\t\t\t\t\ti.update({\u0027priority\u0027:match.get(t,t)})\n\t\t\t\t\t\tbasePath \u003d str(alarm[\u0027fullPath\u0027]).rsplit(\"/\",1)[0]+\u0027/\u0027\n\t\t\t\t\t\t\n\t\t\t\t\t\t#do not override certain properities\t\n\t\t\t\t\t\tfor k in doNotOverride:\n\t\t\t\t\t\t\tif k in tagConfig[0].keys():\n\t\t\t\t\t\t\t\ttagConfig[0].pop(k)\n\t\t\t\t\t\t\n\t\t\t\t\t\t#write back to tag the dictionary of changes\n\t\t\t\t\t\tsystem.tag.configure(basePath, tagConfig)\n\t#\t\t\t\t\taaPath \u003d str(alarm[\u0027fullPath\u0027]) + \".AlarmEvalEnabled\"\n\t#\t\t\t\t\tif system.tag.write(aaPath,False) \u003d\u003d 2:\n\t#\t\t\t\t\t\tsystem.tag.write(aaPath,True)\t\n\t\t\t\tsystem.tag.writeBlocking( tagPath+\".Maintenance_Reason\" , \"\" )\n\t\t\t\t\n\t\t\t\t#record to logger and audit log that maitnenance mde has deactivated\n\t\t\t\tlog.info(\"Maintenance Mode Deactivated: %s\" %(tagPath))\n\t\t\t\tsystem.util.audit(action \u003d \"Maintenance Mode Deactivated\", actionTarget \u003d tagPath)"
+            }
+          ],
+          "Display_Type": "Maintenance_1v0",
+          "dataType": "String",
+          "name": "Maintenance",
+          "Maintenance_End_Time": "2022-02-09 14:12:43",
+          "executionMode": "TagGroupRate",
+          "executionRate": 60000,
+          "Alarm_Priority_Array": [],
+          "Maintenance_Mode_Active": false
+        },
+        {
+          "valueSource": "expr",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\tif initialChange :\n\t\tpath \u003d str.replace(str(tagPath),\"Config/Alarms/Highest_Active_Alarm\",\"\")\n\t\tsystem.tag.write(tagPath+\".Documentation\" , path )\t"
+            }
+          ],
+          "Display_Type": "String_1v0",
+          "expression": "forceQuality(if ( isAlarmActiveFiltered({[.]Highest_Active_Alarm.Documentation} +\"*\", \"*\", \"*\", 4, 4, 0, 0, 0) , \"Critical\",\r\n\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Active_Alarm.Documentation}+\"*\", \"*\", \"*\", 3, 3, 0, 0, 0) , \"High\" , \r\n\t\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Active_Alarm.Documentation}+\"*\", \"*\", \"*\", 2, 2, 0, 0, 0) , \"Medium\" , \r\n\t\t\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Active_Alarm.Documentation}+\"*\", \"*\", \"*\", 1, 1, 0, 0, 0) , \"Low\" ,\r\n\t\t\t\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Active_Alarm.Documentation}+\"*\", \"*\", \"*\", 0, 0, 0, 0, 0) , \"Diagnostic\" ,\r\n\t\t\t\t\t\t\t\t\"\")))))) ",
+          "dataType": "String",
+          "name": "Highest_Active_Alarm",
+          "executionMode": "TagGroupRate",
+          "executionRate": 10000,
+          "tagGroup": "30s_Direct",
+          "enabled": true,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "expr",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\tif initialChange :\n\t\tpath \u003d str.replace(str(tagPath),\"Config/Alarms/Highest_Ack_Alarm\",\"\")\n\t\tsystem.tag.write(tagPath+\".Documentation\" , path )"
+            }
+          ],
+          "Display_Type": "String_1v0",
+          "expression": "forceQuality(if ( isAlarmActiveFiltered({[.]Highest_Ack_Alarm.Documentation} +\"*\", \"*\", \"*\", 4, 4, 0, 1, 0) , \"Critical\",\r\n\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Ack_Alarm.Documentation}+\"*\", \"*\", \"*\", 3, 3, 0, 1, 0) , \"High\" , \r\n\t\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Ack_Alarm.Documentation}+\"*\", \"*\", \"*\", 2, 2, 0, 1, 0) , \"Medium\" , \r\n\t\t\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Ack_Alarm.Documentation}+\"*\", \"*\", \"*\", 1, 1, 0, 1, 0) , \"Low\" ,\r\n\t\t\t\t\t\t\tif ( isAlarmActiveFiltered({[.]Highest_Ack_Alarm.Documentation}+\"*\", \"*\", \"*\", 0, 0, 0, 1, 0) , \"Diagnostic\" ,\r\n\t\t\t\t\t\t\t\t\"\")))))) ",
+          "dataType": "String",
+          "name": "Highest_Ack_Alarm",
+          "executionMode": "TagGroupRate",
+          "executionRate": 10000,
+          "tagGroup": "30s_Direct",
+          "enabled": true,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "expr",
+          "Display_Type": "Bool_1v0",
+          "expression": "forceQuality(isAlarmActive(\"*\"+replace ({PathToParentFolder}, \"/Config/Alarms\",\"/\")+\"*\", \"*\"))",
+          "dataType": "Boolean",
+          "name": "In_Alarm",
+          "executionMode": "TagGroupRate",
+          "tagGroup": "30s_Direct",
+          "value": false,
+          "tagType": "AtomicTag"
+        }
+      ]
+    },
+    {
+      "name": "Manual",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "valueSource": "memory",
+          "Display_Type": "Hyperlink_1v0",
+          "dataType": "String",
+          "name": "Manual_5",
+          "tagGroup": "30_Min",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "Hyperlink_1v0",
+          "dataType": "String",
+          "name": "Manual_3",
+          "tagGroup": "30_Min",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "Hyperlink_1v0",
+          "dataType": "String",
+          "name": "Manual_1",
+          "tagGroup": "30_Min",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "Hyperlink_1v0",
+          "dataType": "String",
+          "name": "Modbus_Manual",
+          "tagGroup": "30_Min",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "Hyperlink_1v0",
+          "dataType": "String",
+          "name": "Manual_2",
+          "tagGroup": "30_Min",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "Hyperlink_1v0",
+          "dataType": "String",
+          "name": "Manual_4",
+          "tagGroup": "30_Min",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        }
+      ]
+    },
+    {
+      "name": "CX",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "valueSource": "memory",
+          "Untested": 0.0,
+          "Untestable": "0.0",
+          "Total_Tested": "0.0",
+          "Tested_Good": 0.0,
+          "tagGroup": "1s_Direct",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\n\tdef manualSearch_1V2(initPath):\n\t\t\t\t\t\t \n\t\ttagSet \u003d system.tag.browseTags(parentPath \u003d initPath, tagPath \u003d \u0027*\u0027,                                   \n\t\t\t\t\t\t\t\t\t\trecursive\u003dFalse)                    \n\t\tfolderSet \u003d system.tag.browseTags(parentPath \u003d initPath, tagPath \u003d \u0027*\u0027, tagType \u003d \u0027Folder\u0027, recursive\u003dFalse)\n\t\t\n\t\tUDTSet \u003d system.tag.browseTags(parentPath \u003d initPath, tagPath \u003d \u0027*\u0027, tagType \u003d \u0027UDT_INST\u0027, recursive\u003dFalse)\n\t\t\t\n\t\tfor UDT in UDTSet :\n\t\t\t\n\t\t\tif not \"/Config\" in str(UDT):\n\t\t\t\t\n\t\t\t\tif not \"/Data_Quality\" in str(UDT):\n\t\t\t\t\n\t\t\t\t\tfolderSet.append(UDT)\t\n\t\t\n\t\tfor folder in folderSet:\n\t\t\ttagSet+\u003dmanualSearch_1V2(folder.fullPath)\n\t\treturn tagSet\n\t\t\n\n\tif initialChange \u003d\u003d True :\n\t\n\t\tUDTPath \u003d str.replace(str(tagPath),\"/Config/CX/CX_Data\",\"\")\n\t\t\n\t\tValue \u003d currentValue.value\n\t\t\n\t\tTags \u003d manualSearch_1V2(UDTPath)\n\t               \n\t\tConfig_Path \u003d str(tagPath)\n\t\t\n\t\tCX_Data\u003d system.dataset.toPyDataSet(currentValue.value)\n\t\trow_count \u003d CX_Data.getRowCount()\n\t\tfound \u003d False \n\t\t\n\t\tfor Tag in Tags:\n\t\t    \n\t\t    ### Check if the tag has a Display Type.\n\t\t\t\n\t\t    if system.tag.exists(str(Tag)+\".Display_Type\") :    \n\t\t    \tfound \u003d False\n\t\t    \t\n\t\t    \tfor x in range (row_count):\n\t\t    \t\t\t\t    \t\t\n\t\t\t        if str(Tag) in CX_Data.getValueAt(x,0):\n\t\t\t        \tfound \u003d True\n\t\t\t        \tbreak\n\t\t\t        \t\n\t\t\t        else:\n\t\t\t        \tcontinue\n\t\t\t        \t \t\t\n\t\t        if found \u003d\u003d False or row_count \u003d\u003d 0:\n\t\t        \n\t\t        \tnow \u003d(system.date.now())                                               \n\t\t        \tUpdates \u003d [Tag,\"Untested\",now,\"\",0]\n\t\t        \tCX_Data \u003d system.dataset.addRow(CX_Data,Updates)\n\t\t        \t\n\t\tsystem.tag.writeBlocking(Config_Path, [CX_Data])\t\t\n"
+            }
+          ],
+          "Total": 0.0,
+          "dataType": "DataSet",
+          "historyProvider": "IgnitionDB01",
+          "name": "CX_Data",
+          "historyEnabled": true,
+          "Percent_Tested": "0.0",
+          "value": "{\"columns\":[{\"name\":\"Tag\",\"type\":\"java.lang.String\"},{\"name\":\"Status\",\"type\":\"java.lang.String\"},{\"name\":\"Date\",\"type\":\"java.util.Date\"},{\"name\":\"User\",\"type\":\"java.lang.String\"},{\"name\":\"Retest\",\"type\":\"java.lang.Integer\"}],\"rows\":[]}",
+          "Tested_Bad": 0.0
+        },
+        {
+          "valueSource": "expr",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\t\n\tUDTPath \u003d str.replace(str(tagPath),\"/Config/CX/CX_Data_Update\",\"\")\n\n\t\n\tCX_Data \u003d system.dataset.toPyDataSet(system.tag.readBlocking(UDTPath+\"/Config/CX/CX_Data\")[0].value) ## Pydataset\n\t\n\t#Calculate Stats \n\t\n\tTotal_Tags \u003d len(CX_Data)\n\t#print Total_Tags \n\t\n\tPercent_Tested \u003d 0 #\n\tTested_Good \u003d 0   #\n\tTested_Bad \u003d 0   #\n\tTotal_Tested \u003d 0  #\n\tUntested \u003d 0     #\n\tUntestable \u003d 0\n\tReported_Issues \u003d 0\n\t\n\tfor row in CX_Data :\n\t \n\t\n\t\tif \"Bad\" \u003d\u003d str(row[1]) :\n\t\t\tTested_Bad +\u003d1\n\t\t\t\n\t\tif \"Bad - Reported Issue\" \u003d\u003d str(row[1]) :\n\t\t\tTested_Bad +\u003d1\t\n\t\t\tReported_Issues +\u003d1\n\t\t\t\n\t\tif \"Good\" \u003d\u003d str(row[1]) :\n\t\t\tTested_Good +\u003d1\n\t\t\t\n\t\tif \"Good - Reported Issue\" \u003d\u003d str(row[1]) :\n\t\t\tTested_Good +\u003d1\t\n\t\t\tReported_Issues +\u003d1\n\t\t\t\n\t\tif \"Untested\" \u003d\u003d str(row[1]) :\n\t\t\tUntested +\u003d1\n\t\t\t\n\t\tif \"Untested - Reported Issue\" \u003d\u003d str(row[1]) :\n\t\t\tUntested +\u003d1\t\n\t\t\tReported_Issues +\u003d1\t\t\t\t\n\t\t\n\t\tif \"Untestable\" \u003d\u003d str(row[1]) :\n\t\t\tUntestable +\u003d1\n\t\n\t\tif \"Untestable - Reported Issue\" \u003d\u003d str(row[1]) :\n\t\t\tUntestable +\u003d1\t\n\t\t\tReported_Issues +\u003d1\n\n\t\n\tTotal_Tested \u003d int(Tested_Good + Tested_Bad)\n\tPercent_Tested \u003d int(float(Total_Tested)/(float(Total_Tags) - float( Untestable)) *100)\n\tPercent_Tested_Good \u003d int(float(Tested_Good)/(float(Total_Tags) - float( Untestable)) *100)\n\t\n\t# Write Stats\n\t\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Total\" , Total_Tags)\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Tested_Good\" , Tested_Good)\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Tested_Bad\" , Tested_Bad)\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Untested\" , Untested)\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Untestable\" , Untestable)\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Total_Tested\" , Total_Tested)\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Percent_Tested\" , Percent_Tested)\n\tsystem.tag.writeBlocking(UDTPath+\"/Config/CX/CX_Data.Percent_Tested_Good\" , Percent_Tested_Good)"
+            }
+          ],
+          "expression": "now()",
+          "dataType": "String",
+          "name": "CX_Data_Update",
+          "executionMode": "FixedRate",
+          "executionRate": 10000,
+          "tagGroup": "1s_Direct",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        }
+      ]
+    },
+    {
+      "name": "Diagnostic",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "value": {
+            "bindType": "parameter",
+            "binding": "{FieldName}"
+          },
+          "valueSource": "memory",
+          "Display_Type": "String_Extra_Long_1v0",
+          "dataType": "String",
+          "name": "Field_Name",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{Device}][Diagnostics]/Hostname"
+          },
+          "opcServer": {
+            "bindType": "parameter",
+            "binding": "{OPC Server}"
+          },
+          "valueSource": "expr",
+          "Display_Type": "String_Extra_Long_1v0",
+          "expression": "tag(\"[System]Gateway/Devices/\"+{Device}+\"/Description\")",
+          "readOnly": true,
+          "dataType": "String",
+          "writePermissions": {
+            "type": "AllOf",
+            "securityLevels": []
+          },
+          "name": "Hostname",
+          "readPermissions": {
+            "type": "AllOf",
+            "securityLevels": []
+          },
+          "tagGroup": "1h_Direct",
+          "enabled": true,
+          "tagType": "AtomicTag"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{Device}]_Meta:[Diagnostics]/Is Connected"
+          },
+          "valueSource": "memory",
+          "writePermissions": {
+            "type": "AllOf",
+            "securityLevels": []
+          },
+          "alarms": [
+            {
+              "setpointA": 4.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Node Device Failure",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 6.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Node Device Busy",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 8.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Memory Parity Error",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 1.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Illegal Function",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 3.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Illegal Data Value",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 5.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Acknowledge Slow Responce",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 11.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Gateway Target Device Failed To Respond",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 10.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Gateway Path Unavailable",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 7.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Negative Acknowledge",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            },
+            {
+              "setpointA": 2.0,
+              "timeOnDelaySeconds": 90.0,
+              "name": "Modbus Fault Illegal Data Address",
+              "clearPipeline": "",
+              "deadbandMode": "Off",
+              "displayPath": "",
+              "priority": "Low",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "{[.]Is_Connected} \u0026\u0026 !{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            }
+          ],
+          "Box_Size": 200.0,
+          "tagGroup": "30s_Direct",
+          "historyTagGroup": "",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "String_1v0",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyEnabled": true,
+          "name": "Modbus_Status",
+          "readPermissions": {
+            "type": "AllOf",
+            "securityLevels": []
+          },
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "",
+          "dataType": "String",
+          "name": "Network_Switch_Port",
+          "Box_Size": "200.0",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Revision}"
+          },
+          "valueSource": "memory",
+          "Display_Type": "String_Extra_Long_1v0",
+          "dataType": "String",
+          "name": "Revision",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "expr",
+          "Display_Type": "Analogue_1v0",
+          "expression": "{Id}",
+          "name": "Node_ID",
+          "Box_Size": "200",
+          "tagGroup": "1h_Direct",
+          "enabled": false,
+          "tagType": "AtomicTag"
+        },
+        {
+          "valueSource": "memory",
+          "Display_Type": "",
+          "dataType": "String",
+          "name": "Network_Switch",
+          "Box_Size": "200.0",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Model}"
+          },
+          "valueSource": "memory",
+          "Display_Type": "String_Extra_Long_1v0",
+          "dataType": "String",
+          "name": "Model",
+          "tagGroup": "1h_Direct",
+          "tagType": "AtomicTag"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "ns\u003d1;s\u003d[{Device}][Diagnostics]/Connected"
+          },
+          "opcServer": {
+            "bindType": "parameter",
+            "binding": "{OPC Server}"
+          },
+          "valueSource": "expr",
+          "expression": "if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\")\u003d\"Connected\" || tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\")\u003d\"Connected: Protocol: EIP\" || tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\")\u003d\"Connected: Protocol: Bridged_EIP\"\r\n,True,False)",
+          "writePermissions": {
+            "type": "AllOf",
+            "securityLevels": []
+          },
+          "alarms": [
+            {
+              "timeOnDelaySeconds": 60.0,
+              "name": "Loss of Communication",
+              "clearPipeline": "",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "High",
+              "ackMode": "Auto",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{RootInstanceName},\u0027:\u0027,{name})"
+              },
+              "displayPath": {
+                "bindType": "Expression",
+                "value": "concat(replace({PathToParentFolder}, \"/Config/Diagnostic/Is_Connected\",\"\"),\" - \",{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Alarms/OOS} \u0026\u0026 !{[~]Site/System_Monitor/GW_Startup_LOC_Suppression/GW_Startup_Suppression_Active} \u0026\u0026\r\n(if(tag(\"[System]Gateway/Devices/\"+{Device}+\"/Status\") !\u003d\"Disabled\",True,False))"
+              }
+            }
+          ],
+          "tagGroup": "30s_Direct",
+          "historyTagGroup": "",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Bool_1v0",
+          "eventScripts": [
+            {
+              "eventid": "valueChanged",
+              "script": "\t\n\t\n\tdef manualSearch(initPath):\n\t\t\t\t\t\t \n\t\ttagSet \u003d system.tag.browseTags(parentPath \u003d initPath, tagPath \u003d \u0027*\u0027,                                   \n\t\t\t\t\t\t\t\t\t\trecursive\u003dFalse)                    \n\t\tfolderSet \u003d system.tag.browseTags(parentPath \u003d initPath, tagPath \u003d \u0027*\u0027,\n\t\t\t\t\t\t\t\t\t\t\ttagType \u003d \u0027Folder\u0027,\n\t\t\t\t\t\t\t\t\t\t\trecursive\u003dFalse)\t\t\t\t\t\t          \n\t\tfor folder in folderSet:\n\t\t\ttagSet+\u003dmanualSearch(folder.fullPath)\n\t\treturn tagSet\n\t\t\n\t\n\t\t\n\tUDTPath \u003d str.replace(str(tagPath),\"/Diagnostic/Is_Connected\",\"\")\n\t\n\tValue \u003d currentValue.value\n\t\n\tTags \u003d manualSearch(UDTPath)\n\t\n\t\n\tfor Tag in Tags:\n\t\t\n\t\tif not str(Tag) \u003d\u003d tagPath :\n\t\t\t\t\n\t\t\tsystem.tag.writeBlocking (str(Tag)+\".AlarmEvalEnabled\", Value)\t\t\t"
+            }
+          ],
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyEnabled": true,
+          "name": "Is_Connected",
+          "executionMode": "TagGroupRate",
+          "readPermissions": {
+            "type": "AllOf",
+            "securityLevels": []
+          }
+        }
+      ]
+    }
+  ]
+}

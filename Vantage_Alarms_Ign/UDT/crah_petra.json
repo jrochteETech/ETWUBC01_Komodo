@@ -1,0 +1,3542 @@
+{
+  "typeColor": -47289,
+  "documentation": "Devices need to uploaded as Zero Based devices.\n\nParameters-\n1.  If ER or IDF Crah {IS_DM_CRAH}\u003d0     other wise   {IS_DM_CRAH}\u003d1\n\n2.  You must imput the number of fans if different that the defualt 8\n\nModify as need it for this new make/model",
+  "name": "CRAH_Petra_PAHHC_600_C30_1v0",
+  "parameters": {
+    "FieldName": {
+      "dataType": "String"
+    },
+    "Site": {
+      "dataType": "String",
+      "value": "AZ14"
+    },
+    "IS_DM_CRAH": {
+      "dataType": "Integer",
+      "value": 1
+    },
+    "UnitID": {
+      "dataType": "String"
+    },
+    "Num_Fans": {
+      "dataType": "Integer",
+      "value": 8
+    },
+    "Device": {
+      "dataType": "String"
+    }
+  },
+  "tagType": "UdtType",
+  "tags": [
+    {
+      "name": "Alarms",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C22"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 0.0,
+              "name": "Return Air Temp Low Alarm",
+              "timeOffDelaySeconds": 0.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Return Air Temp Lo Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "scaleMode": "Off",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "RAT_Temp_Lo_Alm",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C17"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "CHWV Flow Deviation Alarm",
+              "deadband": 0.0,
+              "timeOffDelaySeconds": 10.0,
+              "deadbandMode": "Off",
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "CHWV Deviation Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "CHWV_Deviating",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C23"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 0.0,
+              "name": "Supply Air Temp High Alarm",
+              "timeOffDelaySeconds": 0.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Supply Air Temp High Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "scaleMode": "Off",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "SAT_Temp_Hi_Alm",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C10"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Fan Fault",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Fan Fault",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "Fan_Flt",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C15"
+          },
+          "enabled": {
+            "bindType": "parameter",
+            "binding": "{IS_DM_CRAH}"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Supervisor Comms Loss",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Sup Loss of Comms",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "Supervisor_Comm_Loss",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Loss of Power",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Loss of Power",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "Loss_of_Pwr",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C25"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Filter DP High Alarm",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Filter DP High Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "Filter_DP_Hi_Alm",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C24"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 0.0,
+              "name": "Supply Air Temp Low Alarm",
+              "timeOffDelaySeconds": 0.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Supply Air Temp Lo Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "scaleMode": "Off",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "SAT_Temp_Lo_Alm",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C9"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Smoke Alarm",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Smoke Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "Smoke_Alm",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C11"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Drain Pan Cable Leak Detected",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Drain Pan Cable Leak Detection",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "Drain_Pan_Lk_Detect",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C21"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 0.0,
+              "name": "Return Air Temp High Alarm",
+              "timeOffDelaySeconds": 0.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Return Air Temp High Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "scaleMode": "Off",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "RAT_Temp_Hi_Alm",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "setpointA": 1.0,
+              "mode": "Equality",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Emergency Power Supply Alarm",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "UPS/Ultracap Alarm",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "engUnit": "N/A",
+          "Display_Type": "Alarm_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "UPS_Ultracap_Alm",
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Config",
+      "typeId": "_Base/Config/Modbus/Modbus_1v0",
+      "parameters": {
+        "Model": {
+          "dataType": "String",
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Model}"
+          }
+        },
+        "Vision_Popup_Path": {
+          "dataType": "String"
+        },
+        "Historical_Tag_Provider": {
+          "dataType": "String",
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Historical_Tag_Provider}"
+          }
+        },
+        "Device": {
+          "dataType": "String",
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Device}"
+          }
+        },
+        "Field_Name": {
+          "dataType": "String",
+          "value": {
+            "bindType": "parameter",
+            "binding": "{FieldName}"
+          }
+        },
+        "Revision": {
+          "dataType": "String",
+          "value": {
+            "bindType": "parameter",
+            "binding": "{Revision}"
+          }
+        }
+      },
+      "tagType": "UdtInstance",
+      "tags": [
+        {
+          "name": "Diagnostic",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Is_Connected",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Revision",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Hostname",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Modbus_Status",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Node_ID",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Network_Switch",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Field_Name",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Model",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Network_Switch_Port",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Alarms",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "In_Alarm",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Maintenance",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "OOS",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Pipeline",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Highest_Ack_Alarm",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Highest_Active_Alarm",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "CX",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "CX_Data_Update",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "CX_Data",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Manual",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Manual_1",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Modbus_Manual",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Manual_4",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Manual_2",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Manual_3",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Manual_5",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Display",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "PME_Server",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "PME_Enable",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Web_Enable",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Popup_Data_B",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Feed_Label",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Perspective_Popup_Path",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Popup_Data_A",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Vision_Popup_Path",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "PME_Device_Name",
+              "tagType": "AtomicTag"
+            },
+            {
+              "value": [
+                "/Supply_Air/Sat",
+                "/Return_Air/Rat",
+                "/Fan/Fan_Spd_Cmd",
+                "/CHW/CHW_Flow_Pct",
+                "/Supply_Air/SAT_SP"
+              ],
+              "name": "Trend_Paths",
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "System",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF167"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Filter Differential Pressure Sensor",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "iWC",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Delta_T",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 5,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Motorized Damper Position Feedback",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Mtr_Dmpr_Pos_Fdbk",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF35"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Filter Differential Pressure Sensor",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "iWC",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Filter_DP",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 5,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF165"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Filter Differential Pressure Sensor",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "iWC",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Filter_DP_Hi_Alm_SP",
+          "historyEnabled": true,
+          "alarmEvalEnabled": false,
+          "sampleMode": "Periodic",
+          "historySampleRate": 5,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HR164"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Filter Differential Pressure Sensor",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "iWC",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Int4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Filter_DP_Hi_Alm_Dly",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 5,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C20"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Unit has Smoke detection",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Has_SmokeDetector",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "opcItemPath": "",
+          "documentation": "Air Proving Differential Pressure Switch",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Bool_1v0",
+          "readOnly": true,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "AFM_Sw",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C19"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Unit has leak detection",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Has_LeakDetector",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "System On / Off Status",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Bool_1v0",
+          "readOnly": true,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Sys_Sts",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C8"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Unit Enable Command",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Unit_En_Cmd",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Supply Water Temperature",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Sply_Wtr_Temp",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Return Water Temperature",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Ret_Wtr_Temp",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "opcItemPath": "",
+          "documentation": "Cooling Output (Calculated)",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "Btu/hr",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Cooling_Out",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "CHW",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF126"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Flow from EPIV Valve",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHW_Flow_Pct",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF148"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Deviation Num",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Deviation",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF169"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Max Flow",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "gpm",
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Max_Flow",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "name": "PID",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF39"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Chilled Water Valve PID Loop Cycle Time",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "%",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "CHWV_PID_Cycle_Time",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HR48"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Chilled Water Valve PID Derivative Gain",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "%",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "CHWV_PID_Td",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF49"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Chilled Water Valve PID Low Limiit",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "%",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "CHWV_PID_Lo_Lim",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF45"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Chilled Water Valve PID Proportional Gain",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "%",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "CHWV_PID_Kp",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF51"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Chilled Water Valve PID High Limiit",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "%",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "CHWV_PID_Hi_Lim",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HR47"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Chilled Water Valve PID Integral Gain",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "%",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "CHWV_PID_Ti",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C1"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Auto Mode Cmd",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Boolean",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Auto_Mode",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF124"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve startup position",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_StartUp_Pos",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF0"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Command",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Cmd",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF55"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Manual Command",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Man_Cmd",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C16"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Has pressure independant controls",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Boolean",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Is_ePIV",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF150"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Deviation SP",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Dev_SP",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF37"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Valve Feedback Num",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHWV_Fdbk",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF128"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Chilled Water Flow from EPIV Valve",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "CHW_Flow",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Return_Air",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF153"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "home": true,
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RAT_Hi_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF78"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "mode": "AboveValue",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Return Air Temperature High Limit",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "setpointA": {
+                "bindType": "Expression",
+                "value": "{[.]RAT_High_Lim_SP}"
+              },
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Return Air Temperature Num",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "°F",
+          "home": true,
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "dataType": "Float4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "RAT",
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF156"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "home": true,
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RAT_Lo_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HR152"
+          },
+          "valueSource": "opc",
+          "rawHigh": 1000.0,
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "scaledHigh": 1.0,
+          "Display_Type": "Setpoint_1v0",
+          "scaleMode": "Linear",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RAT_Hi_Dly",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF120"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Return Air Temperature High Limit",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RAT_High_Lim_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF92"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Local Return Air Temperature Setpoint",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RAT_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HR155"
+          },
+          "valueSource": "opc",
+          "rawHigh": 1000.0,
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "scaledHigh": 1.0,
+          "Display_Type": "Setpoint_1v0",
+          "scaleMode": "Linear",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RAT_Lo_Dly",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF122"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Local Return Air Temperature Setpoint",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RA_Fan_CTRL_DB",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF120"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Local Return Air Temperature Setpoint",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "RA_Fan_CTRL_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Supply_Air",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Supply Air Temperature High Limit",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SAT_High_Lim_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Supply Air Temperature Low Limit",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SAT_Low_Lim_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Data Module Global Supply Air Temperature Setpoint",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "enabled": false,
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "DM_SAT_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF159"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SAT_Hi_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF162"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SAT_Lo_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HR158"
+          },
+          "valueSource": "opc",
+          "rawHigh": 1000.0,
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "scaledHigh": 1.0,
+          "Display_Type": "Setpoint_1v0",
+          "scaleMode": "Linear",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SAT_Hi_Dly",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF41"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Local Supply Air Temperature Setpoint",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "°F",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SAT_SP",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF31"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "alarms": [
+            {
+              "mode": "AboveValue",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Supply Air Temperature High Limit",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "Low",
+              "setpointA": {
+                "bindType": "Expression",
+                "value": "{[.]SAT_High_Lim_SP}"
+              },
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            },
+            {
+              "mode": "BelowValue",
+              "CustomEmailMessage": "",
+              "timeOnDelaySeconds": 10.0,
+              "name": "Supply Air Temperature Low Limit",
+              "CustomEmailSubject": "",
+              "timeOffDelaySeconds": 10.0,
+              "priority": "High",
+              "setpointA": {
+                "bindType": "Expression",
+                "value": "{[.]SAT_Low_Lim_SP}"
+              },
+              "activePipeline": {
+                "bindType": "Expression",
+                "value": "{[.]../Config/Alarms/Pipeline}"
+              },
+              "label": {
+                "bindType": "Expression",
+                "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027, {name})"
+              },
+              "enabled": {
+                "bindType": "Expression",
+                "value": "!{[.]../Config/Alarms/OOS} \u0026\u0026 {[.]../Config/Diagnostic/Is_Connected}"
+              }
+            }
+          ],
+          "documentation": "Supply Air Temperature",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "tagType": "AtomicTag",
+          "engUnit": "°F",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "dataType": "Float4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "historyEnabled": true,
+          "name": "SAT",
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HR161"
+          },
+          "valueSource": "opc",
+          "rawHigh": 1000.0,
+          "historyMaxAge": 1,
+          "documentation": "",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "enabled": true,
+          "tagType": "AtomicTag",
+          "scaledHigh": 1.0,
+          "Display_Type": "Setpoint_1v0",
+          "scaleMode": "Linear",
+          "readOnly": false,
+          "dataType": "Int4",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SAT_Lo_Dly",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    },
+    {
+      "name": "Fan",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "name": "Fan_04",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI86"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "5_Sec",
+              "engUnit": "",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS21"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF136"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "name": "Fan_07",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI106"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "5_Sec",
+              "engUnit": "",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS110"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF142"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF72"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Supply Fan Speed Manual Command",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Setpoint_1v0",
+          "readOnly": false,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SF_Spd_Man_Cmd",
+          "historyEnabled": true,
+          "sampleMode": "Periodic",
+          "historySampleRate": 1,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C7"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Supply Fans Enable",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SF_Auto_Mode",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "name": "Fan_06",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI90"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "5_Sec",
+              "engUnit": "",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF140"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS15"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "name": "Fan_03",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS28"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI84"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "5_Sec",
+              "engUnit": "",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF134"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "name": "PID",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF57"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Supply Fan PID Loop Update Cycle Time",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "SF_PID_Cycle_Time",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.C18"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Supply Fan PID Manual Mode",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "%",
+              "tagType": "AtomicTag",
+              "Display_Type": "Button_Toggle_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Boolean",
+              "historyMaxAgeUnits": "MIN",
+              "name": "SF_PID_ManMode",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF68"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Supply Fan PID Low Limit",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "SF_PID_Lo_Lim",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HR75"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Supply Fan PID Derivative Gain",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "SF_PID_Td",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF63"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Supply Fan PID Proportional Gain",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "SF_PID_Kp",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF70"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Supply Fan PID High Limit",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "SF_PID_Hi_Lim",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HR65"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Supply Fan PID Integral Gain",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "",
+              "tagType": "AtomicTag",
+              "Display_Type": "Setpoint_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "SF_PID_Ti",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "name": "Fan_08",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI108"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "5_Sec",
+              "engUnit": "",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS112"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF144"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.C0"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Supply Fans Enable",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "N/A",
+          "tagType": "AtomicTag",
+          "Display_Type": "Button_Toggle_1v0",
+          "readOnly": false,
+          "dataType": "Boolean",
+          "historyProvider": "IgnitionDB01",
+          "historyMaxAgeUnits": "MIN",
+          "name": "SF_En",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF146"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Fan Speed Command",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "kW",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "scaleMode": "Linear",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Fan_Total_Pwr",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        },
+        {
+          "name": "Fan_02",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS11"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI82"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "5_Sec",
+              "engUnit": "",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF132"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "name": "Fan_05",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS25"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI88"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "5_Sec",
+              "engUnit": "",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF138"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "enabled": true,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "name": "Fan_01",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRF130"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Power",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "kW",
+              "tagType": "AtomicTag",
+              "home": true,
+              "Display_Type": "Analogue_1v0",
+              "scaleMode": "Linear",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Pwr",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Local Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUS6"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "alarms": [
+                {
+                  "setpointA": 1.0,
+                  "mode": "Equality",
+                  "timeOnDelaySeconds": 10.0,
+                  "name": "Fan Speed Feedback Deviation",
+                  "timeOffDelaySeconds": 10.0,
+                  "priority": "Low",
+                  "activePipeline": {
+                    "bindType": "Expression",
+                    "value": "{[.]../../Config/Alarms/Pipeline}"
+                  },
+                  "label": {
+                    "bindType": "Expression",
+                    "value": "concat({Site},\u0027:\u0027,{InstanceName},\u0027:\u0027,{name})"
+                  },
+                  "enabled": {
+                    "bindType": "Expression",
+                    "value": "!{[.]../../Config/Alarms/OOS} \u0026\u0026 {[.]../../Config/Diagnostic/Is_Connected}"
+                  }
+                }
+              ],
+              "documentation": "Fan Array Speed Feedback",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "tagType": "AtomicTag",
+              "engUnit": "RPM",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "historyEnabled": true,
+              "name": "Fan_Spd_Fdbk",
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Fan Array Runtime",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "hr",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": true,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "Fan_Run_Hrs",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "opcItemPath": {
+                "bindType": "parameter",
+                "binding": "[{Device}]{UnitID}.HRUI80"
+              },
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Return Air Temperature Num",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "Mech_Leased",
+              "engUnit": "",
+              "tagType": "AtomicTag",
+              "home": true,
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "dataType": "Float4",
+              "historyMaxAgeUnits": "MIN",
+              "name": "ECM_Address",
+              "historyEnabled": true,
+              "sampleMode": "Periodic",
+              "historySampleRate": 1,
+              "opcServer": "Ignition OPC UA Server"
+            },
+            {
+              "valueSource": "opc",
+              "historyMaxAge": 1,
+              "documentation": "Data Module Global Fan Speed Setpoint",
+              "historySampleRateUnits": "MIN",
+              "tagGroup": "1_Hr",
+              "engUnit": "%",
+              "enabled": false,
+              "tagType": "AtomicTag",
+              "Display_Type": "Analogue_1v0",
+              "readOnly": false,
+              "historyProvider": "IgnitionDB01",
+              "historyMaxAgeUnits": "MIN",
+              "name": "DM_Fan_Spd_SP",
+              "historyEnabled": true,
+              "sampleMode": "OnChange",
+              "historySampleRate": 0,
+              "opcServer": "Ignition OPC UA Server"
+            }
+          ]
+        },
+        {
+          "opcItemPath": {
+            "bindType": "parameter",
+            "binding": "[{Device}]{UnitID}.HRF2"
+          },
+          "valueSource": "opc",
+          "historyMaxAge": 1,
+          "documentation": "Fan Speed Command",
+          "historySampleRateUnits": "MIN",
+          "tagGroup": "Mech_Leased",
+          "engUnit": "%",
+          "tagType": "AtomicTag",
+          "Display_Type": "Analogue_1v0",
+          "readOnly": true,
+          "historyProvider": "IgnitionDB01",
+          "dataType": "Float4",
+          "historyMaxAgeUnits": "MIN",
+          "name": "Fan_Spd_Cmd",
+          "historyEnabled": true,
+          "sampleMode": "OnChange",
+          "historySampleRate": 0,
+          "opcServer": "Ignition OPC UA Server"
+        }
+      ]
+    }
+  ]
+}
